@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.allens.lib_base.base.tools.TouchHelper;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -34,7 +36,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements ITopView, IUiHelper, IPermissionImp {
+public abstract class BaseActivity extends AppCompatActivity implements ITopView, IUiHelper, IPermissionImp, TouchHelper.OnTouchHelperListener {
     private Activity mActivity;
     private RxPermissions rxPermissions;
 
@@ -49,6 +51,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         initView(savedInstanceState);
         //这是一个Activity或Fragment实例
         rxPermissions = new RxPermissions(this);
+
+        //放大缩小
+        TouchHelper.create().setListener(this);
         initListener();
     }
 
@@ -233,5 +238,25 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
     @Override
     public Context getContext() {
         return this;
+    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        int pCount = ev.getPointerCount();// 触摸设备时手指的数量
+        if (pCount == 1) {
+            return super.dispatchTouchEvent(ev);
+        }
+        return TouchHelper.create().onTouchEvent(ev);
+    }
+
+    @Override
+    public void onTouchBig() {
+
+    }
+
+    @Override
+    public void onTouchSmall() {
+
     }
 }
