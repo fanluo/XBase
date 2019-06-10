@@ -34,4 +34,15 @@ public class MyAPP extends BaseApplication {
         LogHelper.i("当前锁屏状态 %s", isBack);
     }
 
+    @Override
+    protected boolean onOpenOnePx() {
+        //是否开启一像素保活
+        return true;
+    }
+
+    @Override
+    protected void onAppLockScreen(boolean isBack) {
+        LogHelper.i("app 当前是否是锁屏状态 %s", isBack);
+    }
+
 }

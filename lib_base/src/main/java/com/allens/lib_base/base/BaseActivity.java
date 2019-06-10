@@ -142,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity
      * =======================================================================================================================
      */
     @Override
-    public void silence(boolean skip) {
+    public void silence() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             //设置透明状态栏,这样才能让 ContentView 向上

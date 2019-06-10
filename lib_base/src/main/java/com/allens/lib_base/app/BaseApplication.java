@@ -7,6 +7,8 @@ import android.text.TextUtils;
 
 import com.allens.lib_base.bean.LogInfo;
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.onePx.OnLockScreenListener;
+import com.allens.lib_base.onePx.OnePxUtil;
 import com.allens.lib_base.utils.AppFrontBackHelper;
 import com.orhanobut.hawk.Hawk;
 
@@ -29,7 +31,9 @@ public abstract class BaseApplication extends Application implements IToolmpl {
         //log
         init_log();
         //前后台变化
-        init_backOrFrontListener();
+        backOrFront();
+        //注册一像素保活
+        LockScreen();
     }
 
     /**
@@ -71,7 +75,8 @@ public abstract class BaseApplication extends Application implements IToolmpl {
     /***
      * 判断App  是否前后台状态
      */
-    private void init_backOrFrontListener() {
+    @Override
+    public void backOrFront() {
         helper = new AppFrontBackHelper();
         helper.register(this, new AppFrontBackHelper.OnAppStatusListener() {
             @Override
@@ -105,4 +110,31 @@ public abstract class BaseApplication extends Application implements IToolmpl {
         }
         return p;
     }
+
+    /**
+     * =======================================================================================================================
+     * 锁屏检测
+     * =======================================================================================================================
+     */
+    @Override
+    public void LockScreen() {
+        OnePxUtil.register(this, onOpenOnePx(), new OnLockScreenListener() {
+            @Override
+            public void onLockScreen(boolean isBack) {
+                onAppLockScreen(isBack);
+            }
+        });
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        OnePxUtil.unRgeister(this);
+    }
+
+    //是否开启一像素
+    protected abstract boolean onOpenOnePx();
+
+    //锁屏状态
+    protected abstract void onAppLockScreen(boolean isBack);
 }
