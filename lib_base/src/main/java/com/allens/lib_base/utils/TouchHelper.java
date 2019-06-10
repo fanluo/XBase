@@ -1,4 +1,4 @@
-package com.allens.lib_base.base.tools;
+package com.allens.lib_base.utils;
 
 import android.view.MotionEvent;
 

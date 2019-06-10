@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestAct" />
+        <activity android:name=".test_act.PermissionAct" />
+        <activity android:name=".test_act.TouchAct" />
     </application>
 
 </manifest>

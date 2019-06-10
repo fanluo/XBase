@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.allens.lib_base.base.BaseActivity;
+import com.allens.lib_base.log.LogHelper;
 
 public class MainActivity extends BaseActivity {
 
@@ -23,21 +24,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
-        $(R.id.test).setOnClickListener(v -> {
-            // 1. 应用内简单的跳转(通过URL跳转在'进阶用法'中)
-            ARouter.getInstance().build("/test/activity").navigation();
+        $(R.id.btn_touch).setOnClickListener(v -> {
+            ARouter.getInstance().build("/act/touch").navigation();
         });
-    }
 
-    @Override
-    public void onTouchBig() {
-        super.onTouchBig();
-        System.out.println("======= big");
-    }
-
-    @Override
-    public void onTouchSmall() {
-        super.onTouchSmall();
-        System.out.println("======= small");
+        $(R.id.btn_permission).setOnClickListener(v -> {
+            ARouter.getInstance().build("/act/permission").navigation();
+        });
     }
 }

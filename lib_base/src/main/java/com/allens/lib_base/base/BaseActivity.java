@@ -1,6 +1,5 @@
 package com.allens.lib_base.base;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
@@ -25,18 +25,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import com.allens.lib_base.base.tools.TouchHelper;
+import com.allens.lib_base.utils.TouchHelper;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.Locale;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements ITopView, IUiHelper, IPermissionImp, TouchHelper.OnTouchHelperListener {
+public abstract class BaseActivity extends AppCompatActivity
+        implements ITopView,
+        IUiHelper,
+        IPermissionImp,
+        TouchHelper.OnTouchHelperListener {
+
     private Activity mActivity;
     private RxPermissions rxPermissions;
 
@@ -57,6 +60,13 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         initListener();
     }
 
+
+    /**
+     * =======================================================================================================================
+     * 修改系统字体大小
+     * 1是标准字体
+     * =======================================================================================================================
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -68,10 +78,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         return 1;
     }
 
-    /***
-     * 修改系统字体大小
-     * @param fontScale 1是标准字体
-     */
     private void updateTextSize(int fontScale) {
         Resources resources = this.getResources();
         Configuration configuration = resources.getConfiguration();
@@ -110,6 +116,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
     protected abstract void initListener();
 
 
+    /**
+     * =======================================================================================================================
+     * 权限管理
+     * =======================================================================================================================
+     */
     @Override
     public Observable<Boolean> permissionRequest(String... permissions) {
         return rxPermissions.request(permissions);
@@ -125,6 +136,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         return rxPermissions;
     }
 
+    /**
+     * =======================================================================================================================
+     * 显示沉寂式布局
+     * =======================================================================================================================
+     */
     @Override
     public void silence(boolean skip) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -147,6 +163,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         }
     }
 
+    /**
+     * =======================================================================================================================
+     * 获取宽高
+     * =======================================================================================================================
+     */
     @Override
     public int getWith() {
         WindowManager wm = getWindowManager();
@@ -159,6 +180,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         return wm.getDefaultDisplay().getHeight();
     }
 
+    /**
+     * =======================================================================================================================
+     * startActivity
+     * =======================================================================================================================
+     */
     @Override
     public void startActivity(Class<?> clz) {
         startActivity(new Intent(BaseActivity.this, clz));
@@ -184,6 +210,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * =======================================================================================================================
+     * 加载中动画
+     * =======================================================================================================================
+     */
     @Override
     public void showLoading() {
 
@@ -194,6 +225,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
 
     }
 
+    /**
+     * =======================================================================================================================
+     * 显示碎片 直接替换的方式
+     * =======================================================================================================================
+     */
     @Override
     public void showFragment(Fragment fragment, int resId) {
         FragmentManager manager = getSupportFragmentManager();
@@ -203,16 +239,32 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         transaction.commitAllowingStateLoss();
     }
 
+    /**
+     * =======================================================================================================================
+     * findViewById 简写
+     * =======================================================================================================================
+     */
     @Override
     public <T extends View> T $(int resId) {
         return (T) super.findViewById(resId);
     }
 
+
+    /**
+     * =======================================================================================================================
+     * 获取资源 id 返回String
+     * =======================================================================================================================
+     */
     @Override
     public String getResId(int id) {
         return getResources().getString(id);
     }
 
+    /**
+     * =======================================================================================================================
+     * 获取当前的系统语言
+     * =======================================================================================================================
+     */
     @Override
     public Locale getLocal() {
         Locale locale;
@@ -224,6 +276,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         return locale;
     }
 
+    /**
+     * =======================================================================================================================
+     * 判断网络是否可用
+     * =======================================================================================================================
+     */
     @Override
     public boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(
@@ -240,7 +297,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
         return this;
     }
 
-
+    /**
+     * =======================================================================================================================
+     * 两指放大缩小
+     * =======================================================================================================================
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int pCount = ev.getPointerCount();// 触摸设备时手指的数量
@@ -258,5 +319,21 @@ public abstract class BaseActivity extends AppCompatActivity implements ITopView
     @Override
     public void onTouchSmall() {
 
+    }
+
+    /**
+     * =======================================================================================================================
+     * 显示toast
+     * =======================================================================================================================
+     */
+
+    @Override
+    public void toast(int resId) {
+        Toast.makeText(mActivity, getResId(resId), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void toast(String msg) {
+        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
     }
 }
