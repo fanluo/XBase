@@ -1,10 +1,12 @@
 package com.allens.allenstools;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.allens.lib_base.app.BaseApplication;
 import com.allens.lib_base.bean.LogInfo;
+import com.allens.lib_base.blue.BlueStatus;
 import com.allens.lib_base.log.LogHelper;
 
 public class MyAPP extends BaseApplication {
@@ -22,7 +24,7 @@ public class MyAPP extends BaseApplication {
         return LogInfo.builder()
                 .fileName("log")
                 .isOpen(true)
-                .path("11111111log")
+//                .path("11111111log")
                 .maxFileSize(10)
                 .maxM(5)
                 .tag("log--->")
@@ -50,5 +52,11 @@ public class MyAPP extends BaseApplication {
     public void onAppNetWorkStatus(boolean isMobileConn, boolean isWifiConn) {
         super.onAppNetWorkStatus(isMobileConn, isWifiConn);
         LogHelper.i("app 网络状态 手机连接 %s, wifi 连接 %s", isMobileConn, isWifiConn);
+    }
+
+    @Override
+    public void onBlueStatusChange(BlueStatus status) {
+        super.onBlueStatusChange(status);
+        LogHelper.i("app 蓝牙连接状态 %s", status);
     }
 }

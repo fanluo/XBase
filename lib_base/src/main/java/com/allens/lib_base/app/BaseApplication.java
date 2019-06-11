@@ -6,6 +6,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.allens.lib_base.bean.LogInfo;
+import com.allens.lib_base.blue.BlueStatus;
+import com.allens.lib_base.blue.BlueTools;
+import com.allens.lib_base.blue.OnBlueStatusListener;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.network.NetworkUtil;
 import com.allens.lib_base.network.OnNetWorkListener;
@@ -20,7 +23,7 @@ import java.io.File;
 /***
  * base application
  */
-public abstract class BaseApplication extends Application implements IToolmpl {
+public abstract class BaseApplication extends Application implements IToolmpl, OnBlueStatusListener {
 
     public static Context context;
 
@@ -38,6 +41,8 @@ public abstract class BaseApplication extends Application implements IToolmpl {
         LockScreen();
         //网络变化
         netWorkChange();
+        //蓝牙变化
+        blueStatusChange();
     }
 
     /**
@@ -136,6 +141,9 @@ public abstract class BaseApplication extends Application implements IToolmpl {
     public void onTerminate() {
         super.onTerminate();
         OnePxUtil.unRgeister(this);
+        if (blueTools != null) {
+            blueTools.unRegister(this);
+        }
     }
 
     //是否开启一像素
@@ -173,4 +181,23 @@ public abstract class BaseApplication extends Application implements IToolmpl {
 
     }
 
+
+    /**
+     * =======================================================================================================================
+     * 蓝牙变化
+     * =======================================================================================================================
+     */
+
+    private BlueTools blueTools;
+
+    @Override
+    public void blueStatusChange() {
+        blueTools = new BlueTools();
+        blueTools.register(this, this);
+    }
+
+    @Override
+    public void onBlueStatusChange(BlueStatus status) {
+
+    }
 }

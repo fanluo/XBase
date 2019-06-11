@@ -13,4 +13,7 @@ public interface IToolmpl {
 
     //网络变化
     void netWorkChange();
+
+    //蓝牙广播变化
+    void blueStatusChange();
 }
