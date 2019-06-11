@@ -61,33 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
 
-    /**
-     * =======================================================================================================================
-     * 修改系统字体大小
-     * 1是标准字体
-     * =======================================================================================================================
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateTextSize(setTextSize());
-    }
-
-    @Override
-    public int setTextSize() {
-        return 1;
-    }
-
-    private void updateTextSize(int fontScale) {
-        Resources resources = this.getResources();
-        Configuration configuration = resources.getConfiguration();
-        if (fontScale <= 1) {
-            fontScale = 1;
-        }
-        configuration.fontScale = fontScale;
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-    }
-
     @Override
     protected void onStop() {
         super.onStop();

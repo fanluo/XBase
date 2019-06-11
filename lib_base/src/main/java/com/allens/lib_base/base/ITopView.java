@@ -14,7 +14,6 @@ public interface ITopView {
 
     /***
      * 是否开启沉寂式布局
-     * @param skip 是否跳过
      */
     void silence();
 
