@@ -7,6 +7,8 @@ import android.text.TextUtils;
 
 import com.allens.lib_base.bean.LogInfo;
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.network.NetworkUtil;
+import com.allens.lib_base.network.OnNetWorkListener;
 import com.allens.lib_base.onePx.OnLockScreenListener;
 import com.allens.lib_base.onePx.OnePxUtil;
 import com.allens.lib_base.utils.AppFrontBackHelper;
@@ -34,6 +36,8 @@ public abstract class BaseApplication extends Application implements IToolmpl {
         backOrFront();
         //注册一像素保活
         LockScreen();
+        //网络变化
+        netWorkChange();
     }
 
     /**
@@ -93,7 +97,9 @@ public abstract class BaseApplication extends Application implements IToolmpl {
         });
     }
 
-    protected abstract void onAppFrontOrBack(boolean isBack);
+    public void onAppFrontOrBack(boolean isBack) {
+
+    }
 
 
     /**
@@ -133,8 +139,38 @@ public abstract class BaseApplication extends Application implements IToolmpl {
     }
 
     //是否开启一像素
-    protected abstract boolean onOpenOnePx();
+    public boolean onOpenOnePx() {
+        return true;
+    }
 
     //锁屏状态
-    protected abstract void onAppLockScreen(boolean isBack);
+    public void onAppLockScreen(boolean isBack) {
+
+    }
+
+
+    /**
+     * =======================================================================================================================
+     * 网络变化
+     * =======================================================================================================================
+     */
+    @Override
+    public void netWorkChange() {
+        NetworkUtil.register(this, new OnNetWorkListener() {
+            @Override
+            public void onNetWorkStatus(boolean isMobileConn, boolean isWifiConn) {
+                onAppNetWorkStatus(isMobileConn, isWifiConn);
+            }
+        });
+    }
+
+    /***
+     * app 网络变化
+     * @param isMobileConn 4G是否连接成功
+     * @param isWifiConn    wifi 是否连接成功
+     */
+    public void onAppNetWorkStatus(boolean isMobileConn, boolean isWifiConn) {
+
+    }
+
 }

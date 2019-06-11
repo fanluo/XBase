@@ -10,4 +10,7 @@ public interface IToolmpl {
 
     //前后台判断
     void backOrFront();
+
+    //网络变化
+    void netWorkChange();
 }

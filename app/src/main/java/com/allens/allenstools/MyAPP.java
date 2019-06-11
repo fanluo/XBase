@@ -30,19 +30,25 @@ public class MyAPP extends BaseApplication {
     }
 
     @Override
-    protected void onAppFrontOrBack(boolean isBack) {
-        LogHelper.i("当前锁屏状态 %s", isBack);
+    public void onAppFrontOrBack(boolean isBack) {
+        super.onAppFrontOrBack(isBack);
+        LogHelper.i("当前是否在后台 %s", isBack);
     }
 
     @Override
-    protected boolean onOpenOnePx() {
+    public boolean onOpenOnePx() {
         //是否开启一像素保活
         return true;
     }
 
     @Override
-    protected void onAppLockScreen(boolean isBack) {
+    public void onAppLockScreen(boolean isBack) {
         LogHelper.i("app 当前是否是锁屏状态 %s", isBack);
     }
 
+    @Override
+    public void onAppNetWorkStatus(boolean isMobileConn, boolean isWifiConn) {
+        super.onAppNetWorkStatus(isMobileConn, isWifiConn);
+        LogHelper.i("app 网络状态 手机连接 %s, wifi 连接 %s", isMobileConn, isWifiConn);
+    }
 }
