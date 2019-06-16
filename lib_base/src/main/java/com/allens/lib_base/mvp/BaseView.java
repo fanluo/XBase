@@ -4,8 +4,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LifecycleOwner;
 
-public interface IView extends LifecycleOwner {
-    Context getContext();
+public interface BaseView {
 
-    void showToast(String info);
 }

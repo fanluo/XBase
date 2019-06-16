@@ -7,18 +7,31 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
-public interface IPresenter<V extends IView & LifecycleOwner> extends LifecycleObserver {
+public interface IPresenter<M extends BaseModel, V extends BaseView> {
 
     /**
-     * 创建view时调用  调用在initView 之后
+     * 注册Model层
+     *
+     * @param model
      */
-    void attachView(V view);
+    void registerModel(M model);
 
     /**
-     * view销毁时调用释放资源
+     * 注册View层
+     *
+     * @param view
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    void detachView();
+    void registerView(V view);
 
-    Context getContext();
+    /**
+     * 获取View
+     *
+     * @return
+     */
+    V getView();
+
+    /**
+     * 销毁动作（如Activity、Fragment的卸载）
+     */
+    void destroy();
 }

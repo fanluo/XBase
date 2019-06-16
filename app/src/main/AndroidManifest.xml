@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".test_act.PermissionAct" />
         <activity android:name=".test_act.TouchAct" />
+        <activity android:name=".test_act.mvp.act.TestMvpAct" />
+        <activity android:name=".test_act.mvp.TestMvpAct" />
     </application>
 
 </manifest>
