@@ -29,16 +29,10 @@
                 android:text="权限申请" />
 
             <Button
-                android:id="@+id/btn_text"
+                android:id="@+id/btn_mvp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="全局设置字体" />
-
-            <Button
-                android:id="@+id/btn_silence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="沉寂式并不具" />
+                android:text="mvp 的 base" />
 
         </LinearLayout>
     </ScrollView>

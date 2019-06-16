@@ -31,5 +31,9 @@ public class MainActivity extends BaseActivity {
         $(R.id.btn_permission).setOnClickListener(v -> {
             ARouter.getInstance().build("/act/permission").navigation();
         });
+
+        $(R.id.btn_mvp).setOnClickListener(v -> {
+            ARouter.getInstance().build("/act/mvp").navigation();
+        });
     }
 }
