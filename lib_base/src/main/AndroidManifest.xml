@@ -19,6 +19,15 @@
     <!-- 使用蓝牙所需要的权限 end-->
 
 
+    <!--  网络模块 start -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--  网络模块 end -->
+
     <application>
         <!-- 一像素保活的act -->
         <activity

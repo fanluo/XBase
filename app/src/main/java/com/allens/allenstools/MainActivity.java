@@ -35,5 +35,10 @@ public class MainActivity extends BaseActivity {
         $(R.id.btn_mvp).setOnClickListener(v -> {
             ARouter.getInstance().build("/act/mvp").navigation();
         });
+
+        $(R.id.btn_http).setOnClickListener(v -> {
+            ARouter.getInstance().build("/act/http").navigation();
+        });
+
     }
 }
