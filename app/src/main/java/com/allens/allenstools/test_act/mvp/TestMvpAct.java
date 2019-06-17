@@ -3,6 +3,7 @@ package com.allens.allenstools.test_act.mvp;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.allens.allenstools.R;
 import com.allens.allenstools.test_act.mvp.contract.TestMvpContract;
 import com.allens.allenstools.test_act.mvp.model.TestMvpModel;
 import com.allens.allenstools.test_act.mvp.presenter.TestMvpPresenter;
@@ -12,7 +13,7 @@ import com.allens.lib_base.mvp.BaseMvpActivity;
 public class TestMvpAct extends BaseMvpActivity<TestMvpModel, TestMvpContract.View, TestMvpPresenter> implements TestMvpContract.View {
     @Override
     public int getContentViewId() {
-        return 0;
+        return R.layout.activity_mvp;
     }
 
     @Override
@@ -22,6 +23,9 @@ public class TestMvpAct extends BaseMvpActivity<TestMvpModel, TestMvpContract.Vi
 
     @Override
     protected void initListener() {
+        $(R.id.btn).setOnClickListener(v -> {
+            presenter.testToast();
+        });
 
     }
 
@@ -39,5 +43,10 @@ public class TestMvpAct extends BaseMvpActivity<TestMvpModel, TestMvpContract.Vi
     @Override
     public TestMvpPresenter createPresenter() {
         return new TestMvpPresenter();
+    }
+
+    @Override
+    public void showToast() {
+        toast("测试成功");
     }
 }

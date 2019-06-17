@@ -8,4 +8,10 @@ public class TestMvpPresenter extends BasePresenter<TestMvpContract.Model, TestM
     protected void onViewDestroy() {
 
     }
+
+    @Override
+    public void testToast() {
+
+        getView().showToast();
+    }
 }

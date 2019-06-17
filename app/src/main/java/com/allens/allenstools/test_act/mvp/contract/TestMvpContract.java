@@ -8,8 +8,12 @@ public interface TestMvpContract {
     }
 
     interface View extends BaseView {
+
+        void showToast();
     }
 
     interface Presenter {
+
+        void testToast();
     }
 }

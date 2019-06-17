@@ -78,7 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     protected void baseInit(Bundle savedInstanceState) {
-        setContentView(getContentViewId());
+        int contentViewId = getContentViewId();
+        if (contentViewId != 0)
+            setContentView(contentViewId);
     }
 
 
