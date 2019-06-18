@@ -3,9 +3,11 @@ package com.allens.lib_base.retrofit;
 import android.content.Context;
 
 import com.allens.lib_base.retrofit.impl.ApiService;
+import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
+import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
 
 import org.json.JSONObject;
@@ -162,5 +164,13 @@ public class XHttp {
                 .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
+    }
+
+
+    public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
+        HttpManager.create().getService(ApiService.class)
+                .downloadSmallFile(url)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
 }
