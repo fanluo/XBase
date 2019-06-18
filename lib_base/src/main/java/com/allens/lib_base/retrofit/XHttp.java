@@ -8,6 +8,8 @@ import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +18,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class XHttp {
@@ -27,7 +31,6 @@ public class XHttp {
         public static final int DEFAULT_WRITE_TIMEOUT = 10;
         public static final long DEFAULT_CONNECT_TIMEOUT = 10;
         public static final boolean retryOnConnectionFailure = false;
-
 
 
         private Context context;
@@ -108,6 +111,56 @@ public class XHttp {
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
-                .subscribe(new BeanObserver(tClass,listener));
+                .subscribe(new BeanObserver<T>(tClass, listener));
+    }
+
+    public <T> void doPost(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        listener.onMap(map);
+        HttpManager.create().getService(ApiService.class)
+                .doPost(parameter, map)
+                .subscribeOn(Schedulers.io())//在子线程取数据
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .subscribe(new BeanObserver<T>(tClass, listener));
+
+    }
+
+    public <T> void doBody(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        listener.onMap(map);
+        JSONObject json = new JSONObject(map);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), json.toString());
+        HttpManager.create().getService(ApiService.class)
+                .doBody(parameter, requestBody)
+                .subscribeOn(Schedulers.io())//在子线程取数据
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .subscribe(new BeanObserver<T>(tClass, listener));
+
+    }
+
+    public <T> void doPut(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        listener.onMap(map);
+        HttpManager.create().getService(ApiService.class)
+                .doPost(parameter, map)
+                .subscribeOn(Schedulers.io())//在子线程取数据
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .subscribe(new BeanObserver<T>(tClass, listener));
+
+    }
+
+    public <T> void doDelete(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        listener.onMap(map);
+        HttpManager.create().getService(ApiService.class)
+                .doDelete(parameter, map)
+                .subscribeOn(Schedulers.io())//在子线程取数据
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .subscribe(new BeanObserver<T>(tClass, listener));
+
     }
 }

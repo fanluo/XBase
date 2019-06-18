@@ -44,7 +44,7 @@ public class HttpAct extends BaseActivity {
             xHttp.doGet(String.class, "/wxarticle/chapters/json", new OnHttpListener<String>() {
                 @Override
                 public void onMap(Map<String, Object> map) {
-
+                    map.put("size","1");
                 }
 
                 @Override
