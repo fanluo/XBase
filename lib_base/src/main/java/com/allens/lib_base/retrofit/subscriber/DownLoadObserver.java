@@ -3,11 +3,14 @@ package com.allens.lib_base.retrofit.subscriber;
 import android.app.DownloadManager;
 
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.tool.DownLoadManager;
 import com.allens.lib_base.retrofit.tool.FileTool;
 import com.google.gson.Gson;
+
+import java.util.logging.Logger;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
@@ -18,6 +21,7 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
     private String key, url, downLoadPath;
 
     private OnDownLoadListener loadListener;
+    private Disposable disposable;
 
     public DownLoadObserver(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
         this.loadListener = loadListener;
@@ -28,7 +32,8 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
 
     @Override
     public void onSubscribe(Disposable d) {
-
+        this.disposable = d;
+        HttpManager.create().getDownLoadDisposablePool().addDisposable(key, d);
     }
 
     @Override
@@ -49,6 +54,7 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-
+        LogHelper.i("onComplete downLoad key %s, isDisposed : %s", key, disposable.isDisposed());
+        HttpManager.create().getDownLoadDisposablePool().removeDisposable(key);
     }
 }

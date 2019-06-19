@@ -173,4 +173,9 @@ public class XHttp {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
+
+
+    public void cancelDownLoad(String key) {
+        HttpManager.create().getDownLoadDisposablePool().removeDisposable(key);
+    }
 }
