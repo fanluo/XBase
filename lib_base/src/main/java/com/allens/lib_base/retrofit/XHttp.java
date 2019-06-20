@@ -2,10 +2,12 @@ package com.allens.lib_base.retrofit;
 
 import android.content.Context;
 
+import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
+import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
@@ -176,6 +178,7 @@ public class XHttp {
 
 
     public void cancelDownLoad(String key) {
-        HttpManager.create().getDownLoadDisposablePool().removeDisposable(key);
+        LogHelper.i("cancel download key %s", key);
+        RxApiManager.newInstances().cancel(key);
     }
 }

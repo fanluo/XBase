@@ -1,8 +1,6 @@
 package com.allens.lib_base.retrofit;
 
-import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.interceptor.LogInterceptor;
-import com.allens.lib_base.retrofit.pool.DownLoadDisposablePoolImpl;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,15 +22,12 @@ public class HttpManager {
     private final HttpConfig.HttpConfigBuilder httpConfigBuilder;
     @Getter
     private Retrofit retrofit;
-    @Getter
-    private final DownLoadDisposablePoolImpl downLoadDisposablePool;
 
 
     private HttpManager() {
         okhttpBuilder = new OkHttpClient.Builder();
         retrofitBuilder = new Retrofit.Builder();
         httpConfigBuilder = new HttpConfig.HttpConfigBuilder();
-        downLoadDisposablePool = new DownLoadDisposablePoolImpl();
     }
 
     public static HttpManager create() {

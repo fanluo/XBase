@@ -6,6 +6,7 @@ import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
+import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.tool.DownLoadManager;
 import com.allens.lib_base.retrofit.tool.FileTool;
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
     @Override
     public void onSubscribe(Disposable d) {
         this.disposable = d;
-        HttpManager.create().getDownLoadDisposablePool().addDisposable(key, d);
+        RxApiManager.newInstances().add(key, d);
     }
 
     @Override
@@ -55,6 +56,5 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
     @Override
     public void onComplete() {
         LogHelper.i("onComplete downLoad key %s, isDisposed : %s", key, disposable.isDisposed());
-        HttpManager.create().getDownLoadDisposablePool().removeDisposable(key);
     }
 }

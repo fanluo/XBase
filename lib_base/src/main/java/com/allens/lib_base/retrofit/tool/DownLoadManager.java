@@ -53,23 +53,25 @@ public class DownLoadManager {
 
     @SuppressLint("CheckResult")
     private void handlerFinish(String key, String filepath, OnDownLoadListener loadListener) {
-        Flowable.just(key)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> loadListener.onSuccess(data, filepath));
+//        Flowable.just(key)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(data -> loadListener.onSuccess(data, filepath));
+        loadListener.onSuccess(key,filepath);
     }
 
     @SuppressLint("CheckResult")
     private void handlerFailed(String key, Throwable e, OnDownLoadListener loadListener) {
-        Flowable.just(e)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(throwable -> loadListener.onError(key, e));
+//        Flowable.just(e)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(throwable -> loadListener.onError(key, e));
     }
 
     @SuppressLint("CheckResult")
     private void handlerSuccess(String key, int terms, OnDownLoadListener loadListener) {
-        Flowable.just(terms)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> loadListener.onProgress(key, terms));
+//        Flowable.just(terms)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(integer -> loadListener.onProgress(key, terms));
+        loadListener.onProgress(key,terms);
     }
 
 }

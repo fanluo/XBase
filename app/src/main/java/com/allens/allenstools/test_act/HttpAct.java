@@ -11,6 +11,7 @@ import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.XHttp;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
+import com.tamic.novate.Novate;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
