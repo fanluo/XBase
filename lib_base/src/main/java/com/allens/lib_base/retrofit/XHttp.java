@@ -3,6 +3,7 @@ package com.allens.lib_base.retrofit;
 import android.content.Context;
 
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.retrofit.compose.RxComposeManager;
 import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
@@ -18,13 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class XHttp {
 
@@ -112,9 +110,7 @@ public class XHttp {
         }
         HttpManager.create().getService(ApiService.class)
                 .doGet(getUrl)
-                .subscribeOn(Schedulers.io())//在子线程取数据
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .compose(RxComposeManager.applyMain())
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
@@ -123,9 +119,7 @@ public class XHttp {
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
                 .doPost(parameter, map)
-                .subscribeOn(Schedulers.io())//在子线程取数据
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .compose(RxComposeManager.applyMain())
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
     }
@@ -137,9 +131,7 @@ public class XHttp {
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), json.toString());
         HttpManager.create().getService(ApiService.class)
                 .doBody(parameter, requestBody)
-                .subscribeOn(Schedulers.io())//在子线程取数据
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .compose(RxComposeManager.applyMain())
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
     }
@@ -149,9 +141,7 @@ public class XHttp {
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
                 .doPost(parameter, map)
-                .subscribeOn(Schedulers.io())//在子线程取数据
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .compose(RxComposeManager.applyMain())
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
     }
@@ -161,9 +151,7 @@ public class XHttp {
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
                 .doDelete(parameter, map)
-                .subscribeOn(Schedulers.io())//在子线程取数据
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//在主线程显示ui
+                .compose(RxComposeManager.applyMain())
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
     }

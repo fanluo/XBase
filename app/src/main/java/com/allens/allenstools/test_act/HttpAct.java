@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.allens.allenstools.R;
+import com.allens.allenstools.TestBean;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.XHttp;
@@ -62,20 +63,20 @@ public class HttpAct extends BaseActivity {
 
 
         $(R.id.button3).setOnClickListener(v -> {
-            xHttp.doGet(String.class, "/wxarticle/chapters/json", new OnHttpListener<String>() {
+            xHttp.doGet(TestBean.class, "/wxarticle/chapters/json", new OnHttpListener<TestBean>() {
                 @Override
                 public void onMap(Map<String, Object> map) {
                     map.put("size", "1");
                 }
 
                 @Override
-                public void onSuccess(String s) {
-
+                public void onSuccess(TestBean s) {
+                    LogHelper.i("get 请求成功 %s, thread %s", s.toString(), Thread.currentThread().getName());
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
+                    LogHelper.i("get 请求失败 %s, thread %s", e.getMessage(), Thread.currentThread().getName());
                 }
             });
         });
