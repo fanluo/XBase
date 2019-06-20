@@ -48,13 +48,13 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    api 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     //rxLife
-    implementation 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
-    implementation 'com.trello.rxlifecycle3:rxlifecycle-android:3.0.0'
+    api 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
+    api 'com.trello.rxlifecycle3:rxlifecycle-android:3.0.0'
 }

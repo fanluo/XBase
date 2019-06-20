@@ -10,9 +10,12 @@ import com.allens.allenstools.TestBean;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.XHttp;
+import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.tamic.novate.Novate;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

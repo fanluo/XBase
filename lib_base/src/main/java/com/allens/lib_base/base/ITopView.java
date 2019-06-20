@@ -31,26 +31,9 @@ public interface ITopView {
 
     void startActivityForResult(Class<?> cls, Bundle bundle, int requestCode);
 
-    void showLoading();
-
-    void hideLoading();
 
     void showFragment(Fragment fragment, int resId);
 
-    /***
-     * 绑定控件
-     * @param resId
-     * @param <T>
-     * @return
-     */
-    <T extends View> T $(int resId);
-
-    /***
-     * 获取资源的String
-     * @param id
-     * @return
-     */
-    String getResId(int id);
 
     /***
      * 获取当前系统语言状态

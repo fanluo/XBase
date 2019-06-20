@@ -12,6 +12,9 @@ import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
+import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 
 import org.json.JSONObject;
 
@@ -19,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
@@ -96,6 +101,10 @@ public class XHttp {
             HttpManager.create().build();
             return new XHttp();
         }
+    }
+
+    public <T> T getApiService(Class<T> tClass) {
+        return HttpManager.create().getService(tClass);
     }
 
     public <T> void doGet(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
