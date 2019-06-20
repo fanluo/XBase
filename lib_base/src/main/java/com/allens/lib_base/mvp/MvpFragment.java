@@ -3,10 +3,12 @@ package com.allens.lib_base.mvp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 
 import com.allens.lib_base.base.BaseActivity;
+import com.allens.lib_base.base.BaseFragment;
 
 
 /***
@@ -14,7 +16,8 @@ import com.allens.lib_base.base.BaseActivity;
  * @param <V>
  * @param <P>
  */
-public abstract class MvpFragment<M extends BaseModel, V extends BaseView, P extends BasePresenter> extends Fragment implements MvpCallback<M, V, P> {
+public abstract class MvpFragment<M extends BaseModel, V extends BaseView, P extends BasePresenter> extends BaseFragment implements MvpCallback<M, V, P> {
+
 
     protected P presenter;
 

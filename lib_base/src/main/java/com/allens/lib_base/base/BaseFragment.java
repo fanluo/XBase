@@ -17,8 +17,8 @@ import lombok.Getter;
 public abstract class BaseFragment extends Fragment implements IUiHelper {
 
 
-    @Getter
     protected Activity activity;
+
     private View view;
 
     /**
@@ -43,9 +43,9 @@ public abstract class BaseFragment extends Fragment implements IUiHelper {
     }
 
 
-    abstract int getLayoutId();
+    public abstract int getLayoutId();
 
-    abstract void bindView(View view);
+    public abstract void bindView(View view);
 
 
     /**
