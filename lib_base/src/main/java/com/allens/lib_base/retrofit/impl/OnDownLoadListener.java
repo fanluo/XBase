@@ -7,7 +7,5 @@ public interface OnDownLoadListener {
 
     void onSuccess(String key, String path);
 
-    void onCancel(String key);
-
     void already(String path);
 }

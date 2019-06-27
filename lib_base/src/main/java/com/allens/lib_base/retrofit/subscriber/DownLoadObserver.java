@@ -23,6 +23,8 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
 
     private OnDownLoadListener loadListener;
     private Disposable disposable;
+    private String newFilePath;
+    private boolean isSuccess;
 
     public DownLoadObserver(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
         this.loadListener = loadListener;
@@ -42,10 +44,10 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
         super.onNext(responseBody);
         String fileName = FileTool.getFileName(url);
         LogHelper.i("下载的文件名称 %s", fileName);
-        String newFilePath = FileTool.getString(downLoadPath, url);
+        newFilePath = FileTool.getString(downLoadPath, url);
         LogHelper.i("下载的文件保存位置 %s", newFilePath);
         DownLoadManager downloadManager = new DownLoadManager();
-        downloadManager.downLoad(responseBody, newFilePath, key, loadListener);
+        isSuccess = downloadManager.downLoad(responseBody, newFilePath, key, loadListener);
     }
 
     @Override
@@ -55,6 +57,8 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
 
     @Override
     public void onComplete() {
-        LogHelper.i("onComplete downLoad key %s, isDisposed : %s", key, disposable.isDisposed());
+        LogHelper.i("onComplete downLoad key %s, isDisposed : %s, isDownLoad success %s", key, disposable.isDisposed(), isSuccess);
+        if (isSuccess)
+            loadListener.onSuccess(key, newFilePath);
     }
 }

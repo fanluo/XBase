@@ -113,11 +113,6 @@ public class HttpAct extends BaseActivity {
                 }
 
                 @Override
-                public void onCancel(String key) {
-
-                }
-
-                @Override
                 public void already(String path) {
                     LogHelper.i(" already path %s", path);
                 }

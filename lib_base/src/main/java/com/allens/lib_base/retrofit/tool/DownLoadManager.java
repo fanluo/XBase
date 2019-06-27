@@ -22,7 +22,7 @@ public class DownLoadManager {
 
 
     //下载小文件
-    public void downLoad(ResponseBody responseBody, String filepath, String key, OnDownLoadListener loadListener) {
+    public boolean downLoad(ResponseBody responseBody, String filepath, String key, OnDownLoadListener loadListener) {
         FileOutputStream fos = null;
         InputStream inputStream = responseBody.byteStream();
         long length = responseBody.contentLength();// 流的大小
@@ -37,9 +37,10 @@ public class DownLoadManager {
                 final int terms = (int) (((float) currentLength) / (length) * 100); // 计算百分比
                 handlerSuccess(key, terms, loadListener);
             }
-            handlerFinish(key, filepath, loadListener);
+            return true;
         } catch (Throwable e) {
             handlerFailed(key, e, loadListener);
+            return false;
         } finally {
             try {
                 fos.close();
@@ -47,23 +48,14 @@ public class DownLoadManager {
             } catch (IOException e) {
 
             }
-
         }
     }
 
     @SuppressLint("CheckResult")
-    private void handlerFinish(String key, String filepath, OnDownLoadListener loadListener) {
-//        Flowable.just(key)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(data -> loadListener.onSuccess(data, filepath));
-        loadListener.onSuccess(key,filepath);
-    }
-
-    @SuppressLint("CheckResult")
     private void handlerFailed(String key, Throwable e, OnDownLoadListener loadListener) {
-//        Flowable.just(e)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(throwable -> loadListener.onError(key, e));
+        Flowable.just(e)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(throwable -> loadListener.onError(key, e));
     }
 
     @SuppressLint("CheckResult")
@@ -71,7 +63,7 @@ public class DownLoadManager {
 //        Flowable.just(terms)
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(integer -> loadListener.onProgress(key, terms));
-        loadListener.onProgress(key,terms);
+        loadListener.onProgress(key, terms);
     }
 
 }
