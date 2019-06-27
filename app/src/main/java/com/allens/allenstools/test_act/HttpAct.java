@@ -14,8 +14,6 @@ import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.tamic.novate.Novate;
-import com.trello.rxlifecycle3.RxLifecycle;
-import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -53,11 +51,12 @@ public class HttpAct extends BaseActivity {
                     }
                 });
 
-        xHttp = new XHttp.Builder(this)
+        xHttp = new XHttp.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
-                .baseUrl("https://www.wanandroid.com")
+                .baseUrl("http://134.175.88.222/")
+//                .baseUrl("https://www.wanandroid.com")
                 .retryOnConnectionFailure(false)
                 .isLog(true)
                 .isLogToFile(true)
@@ -66,11 +65,21 @@ public class HttpAct extends BaseActivity {
 
 
         $(R.id.button3).setOnClickListener(v -> {
-            xHttp.doGet(TestBean.class, "/wxarticle/chapters/json", new OnHttpListener<TestBean>() {
+            LogHelper.i("[网络请求 start]");
+            xHttp.doBody(this, TestBean.class, "/app/new_word_list", new OnHttpListener<TestBean>() {
                 @Override
                 public void onMap(Map<String, Object> map) {
-                    map.put("size", "1");
+//                    map.put("size", "1");
+//                    {"at":"bc55768398bebca94edfcdd65b3b4777","pageIndex":1,"appid":"HITVxaFRrwGwyZ2P","pageSize":5,"id":"cca7ff68df2b","sn":"XB02A0A184601000999","lang":"cn"}
+                    map.put("at", "bc55768398bebca94edfcdd65b3b4777");
+                    map.put("pageIndex", 1);
+                    map.put("appid", "HITVxaFRrwGwyZ2P");
+                    map.put("id", "cca7ff68df2b");
+                    map.put("pageSize", 20);
+                    map.put("sn", "XB02A0A184601000999");
+                    map.put("lang", "cn");
                 }
+
 
                 @Override
                 public void onSuccess(TestBean s) {
@@ -119,5 +128,12 @@ public class HttpAct extends BaseActivity {
         $(R.id.cancel_by_id).setOnClickListener(v -> {
             xHttp.cancelDownLoad("123");
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogHelper.i("activity finish ");
+        xHttp.cancelAllDownload();
     }
 }

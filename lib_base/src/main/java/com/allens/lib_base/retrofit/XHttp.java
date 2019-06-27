@@ -1,7 +1,10 @@
 package com.allens.lib_base.retrofit;
 
+import android.app.Activity;
 import android.content.Context;
 
+import com.allens.lib_base.base.ActivityStack;
+import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.compose.RxComposeManager;
 import com.allens.lib_base.retrofit.impl.ApiService;
@@ -12,19 +15,15 @@ import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
-import com.trello.rxlifecycle3.RxLifecycle;
 import com.trello.rxlifecycle3.android.ActivityEvent;
-import com.trello.rxlifecycle3.android.RxLifecycleAndroid;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -40,11 +39,7 @@ public class XHttp {
         public static final boolean retryOnConnectionFailure = false;
 
 
-        private Context context;
-
-
-        public Builder(Context context) {
-            this.context = context;
+        public Builder() {
             HttpManager.create();
         }
 
@@ -107,7 +102,7 @@ public class XHttp {
         return HttpManager.create().getService(tClass);
     }
 
-    public <T> void doGet(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+    public <T> void doGet(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
         HashMap<String, Object> map = new HashMap<>();
         listener.onMap(map);
         String getUrl = url + "/" + parameter;
@@ -120,10 +115,11 @@ public class XHttp {
         HttpManager.create().getService(ApiService.class)
                 .doGet(getUrl)
                 .compose(RxComposeManager.applyMain())
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
-    public <T> void doPost(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+    public <T> void doPost(Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
         HashMap<String, Object> map = new HashMap<>();
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
@@ -133,7 +129,7 @@ public class XHttp {
 
     }
 
-    public <T> void doBody(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+    public <T> void doBody(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
         HashMap<String, Object> map = new HashMap<>();
         listener.onMap(map);
         JSONObject json = new JSONObject(map);
@@ -141,11 +137,12 @@ public class XHttp {
         HttpManager.create().getService(ApiService.class)
                 .doBody(parameter, requestBody)
                 .compose(RxComposeManager.applyMain())
+                .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
 
     }
 
-    public <T> void doPut(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+    public <T> void doPut(Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
         HashMap<String, Object> map = new HashMap<>();
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
@@ -155,7 +152,7 @@ public class XHttp {
 
     }
 
-    public <T> void doDelete(final Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
+    public <T> void doDelete(Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
         HashMap<String, Object> map = new HashMap<>();
         listener.onMap(map);
         HttpManager.create().getService(ApiService.class)
@@ -178,4 +175,9 @@ public class XHttp {
         LogHelper.i("cancel download key %s", key);
         RxApiManager.newInstances().cancel(key);
     }
+
+    public void cancelAllDownload() {
+        RxApiManager.newInstances().cancelAll();
+    }
+
 }

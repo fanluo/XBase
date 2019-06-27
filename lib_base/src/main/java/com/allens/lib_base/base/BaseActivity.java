@@ -28,13 +28,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.allens.lib_base.utils.TouchHelper;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import java.util.Locale;
 
 import io.reactivex.Observable;
 
 
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity extends RxAppCompatActivity
         implements ITopView,
         IUiHelper,
         IPermissionImp,

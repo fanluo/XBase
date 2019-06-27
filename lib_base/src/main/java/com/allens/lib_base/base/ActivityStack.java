@@ -156,4 +156,8 @@ public class ActivityStack {
             popCurrentActivity();
         }
     }
+
+    public LinkedList<Activity> getActivityStack(){
+        return activityStack;
+    }
 }

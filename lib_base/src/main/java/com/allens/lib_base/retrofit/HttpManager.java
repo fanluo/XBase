@@ -40,6 +40,9 @@ public class HttpManager {
     }
 
     public HttpManager build() {
+        if (retrofit != null) {
+            return this;
+        }
         HttpConfig httpConfig = httpConfigBuilder.build();
         if (!httpConfig.connectTime) {
             okhttpBuilder.connectTimeout(XHttp.Builder.DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS);

@@ -12,9 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.trello.rxlifecycle3.components.support.RxFragment;
+
 import lombok.Getter;
 
-public abstract class BaseFragment extends Fragment implements IUiHelper {
+public abstract class BaseFragment extends RxFragment implements IUiHelper {
 
 
     protected Activity activity;
