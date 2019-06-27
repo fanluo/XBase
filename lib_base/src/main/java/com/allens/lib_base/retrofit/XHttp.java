@@ -1,41 +1,20 @@
 package com.allens.lib_base.retrofit;
 
-import android.app.Activity;
-import android.content.Context;
-
-import com.allens.lib_base.base.ActivityStack;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.compose.RxComposeManager;
-import com.allens.lib_base.retrofit.impl.ApiService;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.provider.HttpProvider;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
-import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
-import com.allens.lib_base.retrofit.tool.FileTool;
-import com.allens.lib_base.retrofit.tool.UrlTool;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
 
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class XHttp {
 
@@ -173,14 +152,27 @@ public class XHttp {
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
+    /***
+     * 下载文件，启动线程去下载，下载小文件，图片等
+     * @param key key
+     * @param url 下载地址
+     * @param downLoadPath 下载的文件目录 例如 sdcard/美女文件夹
+     * @param loadListener 下载监听
+     */
     public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        if (FileTool.isAlreadyDownLoadFromUrl(downLoadPath, url)) {
-            loadListener.already(key, downLoadPath);
-            return;
-        }
-        loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
-                .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
+        DownLoadManager.doDownLoad(key, url, downLoadPath, loadListener);
+    }
+
+    /***
+     * 下载文件，启动线程去下载，下载小文件，图片等
+     * @param key key
+     * @param FileName 文件名称 例如 美女.png
+     * @param url 下载地址 例如 sdcard/美女文件夹
+     * @param downLoadPath 下载的文件目录
+     * @param loadListener 下载监听
+     */
+    public void doDownLoad(String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
+        DownLoadManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
     }
 
 

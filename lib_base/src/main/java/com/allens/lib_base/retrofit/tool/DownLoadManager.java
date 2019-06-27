@@ -43,7 +43,8 @@ public class DownLoadManager {
             return false;
         } finally {
             try {
-                fos.close();
+                if (fos != null)
+                    fos.close();
                 inputStream.close();
             } catch (IOException e) {
 
