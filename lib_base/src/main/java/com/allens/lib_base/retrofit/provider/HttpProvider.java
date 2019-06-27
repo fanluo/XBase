@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 import okhttp3.MediaType;
@@ -82,7 +83,9 @@ public class HttpProvider {
     public static Observable<ResponseBody> getObservableDownLoad(String url) {
         return HttpManager.create().getService(ApiService.class)
                 .downloadSmallFile(url)
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

@@ -3,6 +3,7 @@ package com.allens.allenstools.test_act;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.allens.allenstools.R;
@@ -10,15 +11,11 @@ import com.allens.allenstools.TestBean;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.XHttp;
-import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
-import com.tamic.novate.Novate;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 
 @Route(path = "/act/http")
@@ -98,23 +95,32 @@ public class HttpAct extends BaseActivity {
             xHttp.doDownLoad("123", url, "sdcard/allens", new OnDownLoadListener() {
 
                 @Override
+                public void onStart(String key) {
+                    toast("开始下载");
+                }
+
+                @Override
                 public void onProgress(String key, int terms) {
-                    LogHelper.i("key %s progress %s", key, terms);
+                    ((Button) $(R.id.button)).setText("下载 " + terms);
+                    LogHelper.i("key %s progress %s， thread name %s", key, terms, Thread.currentThread().getName());
                 }
 
                 @Override
                 public void onError(String key, Throwable e) {
                     LogHelper.i("key %s , error %s", key, e.getMessage());
+                    toast("下载失败");
                 }
 
                 @Override
                 public void onSuccess(String key, String path) {
                     LogHelper.i("key %s success path %s", key, path);
+                    toast("下载成功 " + path);
                 }
 
                 @Override
-                public void already(String path) {
+                public void already(String key, String path) {
                     LogHelper.i(" already path %s", path);
+                    toast("文件已下载");
                 }
             });
         });
@@ -122,6 +128,7 @@ public class HttpAct extends BaseActivity {
 
         $(R.id.cancel_by_id).setOnClickListener(v -> {
             xHttp.cancelDownLoad("123");
+            ((Button) $(R.id.button)).setText("下载");
         });
     }
 

@@ -58,12 +58,16 @@ public class DownLoadManager {
                 .subscribe(throwable -> loadListener.onError(key, e));
     }
 
+    private int lastTerms = -1;
+
     @SuppressLint("CheckResult")
     private void handlerSuccess(String key, int terms, OnDownLoadListener loadListener) {
-//        Flowable.just(terms)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(integer -> loadListener.onProgress(key, terms));
-        loadListener.onProgress(key, terms);
+        if (terms > lastTerms) {
+            this.lastTerms = terms;
+            Flowable.just(terms)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> loadListener.onProgress(key, terms));
+        }
     }
 
 }

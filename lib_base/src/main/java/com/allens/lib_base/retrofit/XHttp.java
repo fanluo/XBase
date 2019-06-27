@@ -16,6 +16,7 @@ import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.provider.HttpProvider;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
+import com.allens.lib_base.retrofit.tool.FileTool;
 import com.allens.lib_base.retrofit.tool.UrlTool;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
@@ -173,6 +174,11 @@ public class XHttp {
     }
 
     public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
+        if (FileTool.isAlreadyDownLoadFromUrl(downLoadPath, url)) {
+            loadListener.already(key, downLoadPath);
+            return;
+        }
+        loadListener.onStart(key);
         HttpProvider.getObservableDownLoad(url)
                 .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
