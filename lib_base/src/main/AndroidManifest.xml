@@ -37,5 +37,8 @@
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"
             android:theme="@style/OnePxActStyle" />
+
+        <!-- 下载大文件的service -->
+        <service android:name=".retrofit.download.DownLoadService"/>
     </application>
 </manifest>

@@ -51,4 +51,9 @@ public interface ApiService {
     @GET
     Observable<ResponseBody> downloadSmallFile(@Url String fileUrl);
 
+
+    @Streaming //大文件时要加不然会OOM
+    @GET
+    Observable<ResponseBody> downloadFile(@Header("Range") String range, @Url String fileUrl);
+
 }

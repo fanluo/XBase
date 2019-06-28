@@ -92,7 +92,7 @@ public class HttpAct extends BaseActivity {
 
         $(R.id.button).setOnClickListener(v -> {
             String url = "http://dik.img.kttpdq.com/pic/134/93216/6504077b3c9af2ca_1366x768.jpg";
-            xHttp.doDownLoad("123", url, "美女.png", "sdcard/allens",new OnDownLoadListener() {
+            xHttp.doDownLoad("123", url, "美女.png", "sdcard/allens", new OnDownLoadListener() {
 
                 @Override
                 public void onStart(String key) {
@@ -129,6 +129,11 @@ public class HttpAct extends BaseActivity {
         $(R.id.cancel_by_id).setOnClickListener(v -> {
             xHttp.cancelDownLoad("123");
             ((Button) $(R.id.button)).setText("下载");
+        });
+
+        $(R.id.button4).setOnClickListener(v -> {
+            String url = "http://dik.img.kttpdq.com/pic/134/93216/6504077b3c9af2ca_1366x768.jpg";
+            xHttp.downLoadBig(this, url);
         });
     }
 

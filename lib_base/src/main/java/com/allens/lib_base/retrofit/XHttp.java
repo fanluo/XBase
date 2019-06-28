@@ -1,9 +1,12 @@
 package com.allens.lib_base.retrofit;
 
+import android.content.Context;
+
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadManager;
+import com.allens.lib_base.retrofit.download.DownLoadBigManager;
+import com.allens.lib_base.retrofit.download.DownLoadService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
@@ -160,7 +163,7 @@ public class XHttp {
      * @param loadListener 下载监听
      */
     public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoad(key, url, downLoadPath, loadListener);
+        DownLoadBigManager.doDownLoad(key, url, downLoadPath, loadListener);
     }
 
     /***
@@ -172,7 +175,11 @@ public class XHttp {
      * @param loadListener 下载监听
      */
     public void doDownLoad(String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
+        DownLoadBigManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
+    }
+
+    public void downLoadBig(BaseActivity activity, String url) {
+        DownLoadService.startDownLoad(activity, url);
     }
 
 

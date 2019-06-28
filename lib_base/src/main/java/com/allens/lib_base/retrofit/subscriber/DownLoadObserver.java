@@ -1,17 +1,10 @@
 package com.allens.lib_base.retrofit.subscriber;
 
-import android.app.DownloadManager;
-
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
-import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
-import com.allens.lib_base.retrofit.tool.DownLoadManager;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.tool.FileTool;
-import com.google.gson.Gson;
-
-import java.util.logging.Logger;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;

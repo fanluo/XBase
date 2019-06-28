@@ -88,4 +88,19 @@ public class HttpProvider {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /***
+     * 下载大文件
+     * 启动子线程 可能会有多个子线程
+     * @param url 下载地址
+     * @param range  下载的区间
+     * @return Observable
+     */
+    public static Observable<ResponseBody> getObservableDownLoadBig(String url, String range) {
+        return HttpManager.create().getService(ApiService.class)
+                .downloadFile(range, url)
+                .subscribeOn(Schedulers.newThread())
+                .unsubscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }
