@@ -1,12 +1,10 @@
 package com.allens.lib_base.retrofit;
 
-import android.content.Context;
-
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.DownLoadBigManager;
-import com.allens.lib_base.retrofit.download.DownLoadService;
+import com.allens.lib_base.retrofit.download.service.DownLoadService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
@@ -178,8 +176,8 @@ public class XHttp {
         DownLoadBigManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
     }
 
-    public void downLoadBig(BaseActivity activity, String url) {
-        DownLoadService.startDownLoad(activity, url);
+    public void downLoadBig(BaseActivity activity, String key, String FileName, String downLoadPath, String url) {
+        DownLoadService.startDownLoad(activity, key, FileName, downLoadPath, url);
     }
 
 

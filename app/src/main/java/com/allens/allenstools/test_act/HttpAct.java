@@ -132,8 +132,9 @@ public class HttpAct extends BaseActivity {
         });
 
         $(R.id.button4).setOnClickListener(v -> {
-            String url = "http://dik.img.kttpdq.com/pic/134/93216/6504077b3c9af2ca_1366x768.jpg";
-            xHttp.downLoadBig(this, url);
+            String url = "https://media.w3.org/2010/05/sintel/trailer.mp4";
+//            String url = "http://dik.img.kttpdq.com/pic/134/93216/6504077b3c9af2ca_1366x768.jpg";
+            xHttp.downLoadBig(this, "12","测试.mp4","sdcard/allens",url);
         });
     }
 
