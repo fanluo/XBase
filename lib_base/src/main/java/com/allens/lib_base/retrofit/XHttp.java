@@ -3,7 +3,7 @@ package com.allens.lib_base.retrofit;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadBigManager;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.download.service.DownLoadService;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
@@ -161,7 +161,15 @@ public class XHttp {
      * @param loadListener 下载监听
      */
     public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadBigManager.doDownLoad(key, url, downLoadPath, loadListener);
+        DownLoadManager.doDownLoad(key, url, downLoadPath, loadListener);
+    }
+
+    public void doDownLoadBindFragment(BaseFragment fragment, String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
+        DownLoadManager.doDownLoadByFragment(fragment, key, url, downLoadPath, loadListener);
+    }
+
+    public void doDownLoadBindActivtity(BaseActivity activity, String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
+        DownLoadManager.doDownLoadByActivity(activity, key, url, downLoadPath, loadListener);
     }
 
     /***
@@ -173,7 +181,15 @@ public class XHttp {
      * @param loadListener 下载监听
      */
     public void doDownLoad(String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadBigManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
+        DownLoadManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
+    }
+
+    public void doDownLoadBindActivtity(BaseActivity activity, String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
+        DownLoadManager.doDownLoadByActivity(activity, key, url, FileName, downLoadPath, loadListener);
+    }
+
+    public void doDownLoadBindActivtity(BaseFragment fragment, String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
+        DownLoadManager.doDownLoadByFragment(fragment, key, url, FileName, downLoadPath, loadListener);
     }
 
     public void downLoadBig(BaseActivity activity, String key, String FileName, String downLoadPath, String url) {

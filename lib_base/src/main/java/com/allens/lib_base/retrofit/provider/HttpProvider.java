@@ -1,15 +1,10 @@
 package com.allens.lib_base.retrofit.provider;
 
-import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.compose.RxComposeManager;
 import com.allens.lib_base.retrofit.impl.ApiService;
-import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
-import com.allens.lib_base.retrofit.subscriber.BeanObserver;
-import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.UrlTool;
-import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import org.json.JSONObject;
 
@@ -18,7 +13,6 @@ import java.util.HashMap;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Getter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -82,7 +76,7 @@ public class HttpProvider {
 
     public static Observable<ResponseBody> getObservableDownLoad(String url) {
         return HttpManager.create().getService(ApiService.class)
-                .downloadSmallFile(url)
+                .downloadFile(url)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

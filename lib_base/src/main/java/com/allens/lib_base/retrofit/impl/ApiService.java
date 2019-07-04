@@ -48,8 +48,9 @@ public interface ApiService {
     @PUT()
     Observable<ResponseBody> doPut(@Url String url, @FieldMap Map<String, Object> maps);
 
+    @Streaming
     @GET
-    Observable<ResponseBody> downloadSmallFile(@Url String fileUrl);
+    Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
 
     @Streaming //大文件时要加不然会OOM

@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadBigManager;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.subscriber.DownLoadBIgObserver;
 import com.allens.lib_base.retrofit.tool.FileTool;
 
@@ -71,7 +71,7 @@ public class DownLoadService extends IntentService {
      * @param path 下载位置
      */
     private void start(String url, String key, String path) {
-        DownLoadBigManager.getDownLoadBigResponse(url, null)
+        DownLoadManager.getDownLoadBigResponse(url, null)
                 .subscribe(new DownLoadBIgObserver(key, url, path));
     }
 

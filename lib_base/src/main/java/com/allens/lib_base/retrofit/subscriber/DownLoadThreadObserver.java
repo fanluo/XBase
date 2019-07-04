@@ -1,9 +1,8 @@
 package com.allens.lib_base.retrofit.subscriber;
 
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadManager;
+import com.allens.lib_base.retrofit.download.FileManager;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
-import com.allens.lib_base.retrofit.tool.FileTool;
 
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
@@ -25,7 +24,7 @@ public class DownLoadThreadObserver extends BaseObserver<ResponseBody> implement
 
     @Override
     public void onNext(ResponseBody responseBody) {
-        DownLoadManager downloadManager = new DownLoadManager();
+        FileManager downloadManager = new FileManager();
         LogHelper.i("多线程下载 当前线程 %s ; file path %s", Thread.currentThread().getName(), path);
         boolean isSuccess = downloadManager.downLoadBIg(responseBody, path, key, start, this);
         LogHelper.i("多线程下载 当前线程 %s ， 是否下载成功 %s", Thread.currentThread().getName(), isSuccess);

@@ -3,7 +3,7 @@ package com.allens.lib_base.retrofit.subscriber;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
-import com.allens.lib_base.retrofit.download.DownLoadManager;
+import com.allens.lib_base.retrofit.download.FileManager;
 import com.allens.lib_base.retrofit.tool.FileTool;
 
 import io.reactivex.disposables.Disposable;
@@ -39,7 +39,7 @@ public class DownLoadObserver extends BaseObserver<ResponseBody> {
         LogHelper.i("下载的文件名称 %s", fileName);
         newFilePath = FileTool.getString(downLoadPath, url);
         LogHelper.i("下载的文件保存位置 %s", newFilePath);
-        DownLoadManager downloadManager = new DownLoadManager();
+        FileManager downloadManager = new FileManager();
         isSuccess = downloadManager.downLoad(responseBody, newFilePath, key, loadListener);
     }
 

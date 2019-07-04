@@ -1,7 +1,7 @@
 package com.allens.lib_base.retrofit.subscriber;
 
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadBigManager;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public class DownLoadBIgObserver extends BaseObserver<ResponseBody> {
 
             String format = String.format("bytes=" + "%s-%s", start, end);
             LogHelper.i("启动下载 %s, 每个线程下载大小 %s, path %s", format, threadSize, path);
-            DownLoadBigManager.getDownLoadBigResponse(url, format)
+            DownLoadManager.getDownLoadBigResponse(url, format)
                     .subscribe(new DownLoadThreadObserver(start, key, path));
         }
     }
