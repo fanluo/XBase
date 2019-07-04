@@ -17,7 +17,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
-public class HttpProvider {
+public class ObservableProvider {
 
 
     public static <T> Observable<ResponseBody> getObservableGet(String parameter, String url, final OnHttpListener<T> listener) {

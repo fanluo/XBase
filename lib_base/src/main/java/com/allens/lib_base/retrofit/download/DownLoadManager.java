@@ -3,7 +3,7 @@ package com.allens.lib_base.retrofit.download;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
-import com.allens.lib_base.retrofit.provider.HttpProvider;
+import com.allens.lib_base.retrofit.provider.ObservableProvider;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.FileTool;
 import com.trello.rxlifecycle3.android.ActivityEvent;
@@ -20,7 +20,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
 
@@ -30,7 +30,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .compose(fragment.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
@@ -41,7 +41,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .compose(activity.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new DownLoadObserver(key, url, downLoadPath, loadListener));
     }
@@ -53,7 +53,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .subscribe(new DownLoadObserver(key, fileName, downLoadPath, loadListener));
     }
 
@@ -63,7 +63,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .compose(fragment.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new DownLoadObserver(key, fileName, downLoadPath, loadListener));
     }
@@ -74,7 +74,7 @@ public class DownLoadManager {
             return;
         }
         loadListener.onStart(key);
-        HttpProvider.getObservableDownLoad(url)
+        ObservableProvider.getObservableDownLoad(url)
                 .compose(activity.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new DownLoadObserver(key, fileName, downLoadPath, loadListener));
     }
@@ -84,6 +84,6 @@ public class DownLoadManager {
         if (rang == null) {
             rang = "bytes=0-";
         }
-        return HttpProvider.getObservableDownLoadBig(url, rang);
+        return ObservableProvider.getObservableDownLoadBig(url, rang);
     }
 }

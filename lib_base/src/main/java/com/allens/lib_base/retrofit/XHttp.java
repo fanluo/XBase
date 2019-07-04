@@ -9,13 +9,15 @@ import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
-import com.allens.lib_base.retrofit.provider.HttpProvider;
+import com.allens.lib_base.retrofit.provider.ObservableProvider;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Retrofit;
 
 public class XHttp {
 
@@ -92,63 +94,63 @@ public class XHttp {
     }
 
     public <T> void doGet(BaseFragment context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableGet(parameter, url, listener)
+        ObservableProvider.getObservableGet(parameter, url, listener)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doGet(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableGet(parameter, url, listener)
+        ObservableProvider.getObservableGet(parameter, url, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doPost(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservablePost(parameter, listener)
+        ObservableProvider.getObservablePost(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
 
     public <T> void doPost(BaseFragment context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservablePost(parameter, listener)
+        ObservableProvider.getObservablePost(parameter, listener)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
 
     public <T> void doBody(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableBody(parameter, listener)
+        ObservableProvider.getObservableBody(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doBody(BaseFragment context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableBody(parameter, listener)
+        ObservableProvider.getObservableBody(parameter, listener)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doPut(BaseFragment context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservablePut(parameter, listener)
+        ObservableProvider.getObservablePut(parameter, listener)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doPut(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservablePut(parameter, listener)
+        ObservableProvider.getObservablePut(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doDelete(BaseFragment context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableDelete(parameter, listener)
+        ObservableProvider.getObservableDelete(parameter, listener)
                 .compose(context.bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
     public <T> void doDelete(BaseActivity context, Class<T> tClass, String parameter, final OnHttpListener<T> listener) {
-        HttpProvider.getObservableDelete(parameter, listener)
+        ObservableProvider.getObservableDelete(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
@@ -192,8 +194,12 @@ public class XHttp {
         DownLoadManager.doDownLoadByFragment(fragment, key, url, FileName, downLoadPath, loadListener);
     }
 
-    public void downLoadBig(BaseActivity activity, String FileName, String downLoadPath, String url) {
+    public void downLoadByService(BaseActivity activity, String FileName, String downLoadPath, String url) {
         DownLoadService.startDownLoad(activity, url, FileName, downLoadPath, url);
+    }
+
+    public void downLoad( String FileName, String downLoadPath, String url){
+//        Retrofit retrofit = HttpManager.create().getRetrofit();
     }
 
 
