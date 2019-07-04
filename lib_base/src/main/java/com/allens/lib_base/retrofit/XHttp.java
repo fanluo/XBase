@@ -192,8 +192,8 @@ public class XHttp {
         DownLoadManager.doDownLoadByFragment(fragment, key, url, FileName, downLoadPath, loadListener);
     }
 
-    public void downLoadBig(BaseActivity activity, String key, String FileName, String downLoadPath, String url) {
-        DownLoadService.startDownLoad(activity, key, FileName, downLoadPath, url);
+    public void downLoadBig(BaseActivity activity, String FileName, String downLoadPath, String url) {
+        DownLoadService.startDownLoad(activity, url, FileName, downLoadPath, url);
     }
 
 
