@@ -3,9 +3,6 @@ package com.allens.lib_base.retrofit;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.DownLoadManager;
-import com.allens.lib_base.retrofit.download.service.DownLoadService;
-import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
@@ -153,63 +150,6 @@ public class XHttp {
         ObservableProvider.getObservableDelete(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
-    }
-
-    /***
-     * 下载文件，启动线程去下载，下载小文件，图片等
-     * @param key key
-     * @param url 下载地址
-     * @param downLoadPath 下载的文件目录 例如 sdcard/美女文件夹
-     * @param loadListener 下载监听
-     */
-    public void doDownLoad(String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoad(key, url, downLoadPath, loadListener);
-    }
-
-    public void doDownLoadBindFragment(BaseFragment fragment, String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoadByFragment(fragment, key, url, downLoadPath, loadListener);
-    }
-
-    public void doDownLoadBindActivtity(BaseActivity activity, String key, String url, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoadByActivity(activity, key, url, downLoadPath, loadListener);
-    }
-
-    /***
-     * 下载文件，启动线程去下载，下载小文件，图片等
-     * @param key key
-     * @param FileName 文件名称 例如 美女.png
-     * @param url 下载地址 例如 sdcard/美女文件夹
-     * @param downLoadPath 下载的文件目录
-     * @param loadListener 下载监听
-     */
-    public void doDownLoad(String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoad(key, url, FileName, downLoadPath, loadListener);
-    }
-
-    public void doDownLoadBindActivtity(BaseActivity activity, String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoadByActivity(activity, key, url, FileName, downLoadPath, loadListener);
-    }
-
-    public void doDownLoadBindActivtity(BaseFragment fragment, String key, String url, String FileName, String downLoadPath, OnDownLoadListener loadListener) {
-        DownLoadManager.doDownLoadByFragment(fragment, key, url, FileName, downLoadPath, loadListener);
-    }
-
-    public void downLoadByService(BaseActivity activity, String FileName, String downLoadPath, String url) {
-        DownLoadService.startDownLoad(activity, url, FileName, downLoadPath, url);
-    }
-
-    public void downLoad( String FileName, String downLoadPath, String url){
-//        Retrofit retrofit = HttpManager.create().getRetrofit();
-    }
-
-
-    public void cancelDownLoad(String key) {
-        LogHelper.i("cancel download key %s", key);
-        RxApiManager.newInstances().cancel(key);
-    }
-
-    public void cancelAllDownload() {
-        RxApiManager.newInstances().cancelAll();
     }
 
 }

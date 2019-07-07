@@ -1,4 +1,4 @@
-package com.allens.lib_base.base;
+package com.allens.lib_base.base.impl;
 
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;

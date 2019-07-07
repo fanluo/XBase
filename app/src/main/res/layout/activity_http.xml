@@ -4,30 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button3"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="get" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button"
+        <Button
+            android:id="@+id/button_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get" />
+
+    </LinearLayout>
+
+
+
+
+    <TextView
+        android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="下载" />
-
-
-    <Button
-        android:id="@+id/cancel_by_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="取消单个下载任务" />
-
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="多线程下载" />
-
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.allens.lib_base.app;
+package com.allens.lib_base.app.impl;
 
 public interface IToolmpl {
 

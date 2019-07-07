@@ -1,4 +1,4 @@
-package com.allens.lib_base.base;
+package com.allens.lib_base.base.tools;
 
 import android.app.Activity;
 

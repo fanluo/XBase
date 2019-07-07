@@ -1,4 +1,4 @@
-package com.allens.lib_base.base;
+package com.allens.lib_base.base.impl;
 
 import android.view.View;
 

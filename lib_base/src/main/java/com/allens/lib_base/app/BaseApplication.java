@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.allens.lib_base.app.impl.IToolmpl;
 import com.allens.lib_base.bean.LogInfo;
 import com.allens.lib_base.blue.BlueStatus;
 import com.allens.lib_base.blue.BlueTools;

@@ -74,14 +74,6 @@ public class ObservableProvider {
     }
 
 
-    public static Observable<ResponseBody> getObservableDownLoad(String url) {
-        return HttpManager.create().getService(ApiService.class)
-                .downloadFile(url)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
     /***
      * 下载大文件
      * 启动子线程 可能会有多个子线程
@@ -89,7 +81,7 @@ public class ObservableProvider {
      * @param range  下载的区间
      * @return Observable
      */
-    public static Observable<ResponseBody> getObservableDownLoadBig(String url, String range) {
+    public static Observable<ResponseBody> getObservableDownLoad(String url, String range) {
         return HttpManager.create().getService(ApiService.class)
                 .downloadFile(range, url)
                 .subscribeOn(Schedulers.newThread())

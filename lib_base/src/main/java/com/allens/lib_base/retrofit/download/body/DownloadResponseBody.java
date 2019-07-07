@@ -1,9 +1,6 @@
-package com.allens.lib_base.retrofit.body;
+package com.allens.lib_base.retrofit.download.body;
 
-import android.util.Log;
-
-
-import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
+import com.allens.lib_base.retrofit.download.impl.DownloadProgressListener;
 
 import java.io.IOException;
 
@@ -15,18 +12,18 @@ import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
 
+/**
+ * 自定义精度的body
+ */
 public class DownloadResponseBody extends ResponseBody {
+
     private ResponseBody responseBody;
-    private OnDownLoadListener downloadListener;
-    // BufferedSource 是okio库中的输入流，这里就当作inputStream来使用。
+    private DownloadProgressListener progressListener;
     private BufferedSource bufferedSource;
 
-    private String key;
-
-    public DownloadResponseBody(String key, ResponseBody responseBody, OnDownLoadListener downloadListener) {
-        this.key = key;
+    public DownloadResponseBody(ResponseBody responseBody, DownloadProgressListener progressListener) {
         this.responseBody = responseBody;
-        this.downloadListener = downloadListener;
+        this.progressListener = progressListener;
     }
 
     @Override
@@ -56,14 +53,12 @@ public class DownloadResponseBody extends ResponseBody {
                 long bytesRead = super.read(sink, byteCount);
                 // read() returns the number of bytes read, or -1 if this source is exhausted.
                 totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-                Log.e("log>>>>>", "read: " + (int) (totalBytesRead * 100 / responseBody.contentLength()));
-                if (null != downloadListener) {
-                    if (bytesRead != -1) {
-                        downloadListener.onProgress(key, (int) (totalBytesRead * 100 / responseBody.contentLength()));
-                    }
+                if (null != progressListener) {
+                    progressListener.update(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
                 }
                 return bytesRead;
             }
         };
+
     }
 }

@@ -3,8 +3,6 @@ package com.allens.lib_base.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,13 +16,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.allens.lib_base.base.impl.IPermissionImp;
+import com.allens.lib_base.base.impl.ITopView;
+import com.allens.lib_base.base.impl.IUiHelper;
+import com.allens.lib_base.base.tools.ActivityStack;
 import com.allens.lib_base.utils.TouchHelper;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
