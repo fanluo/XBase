@@ -39,7 +39,7 @@ public class DownLoadObserver extends BaseObserver<DownLoadBean> {
     public void onComplete() {
         if (loadListener != null) {
             if (downLoadBean.getIsSuccess() != null && downLoadBean.getIsSuccess())
-                loadListener.onSuccess();
+                loadListener.onSuccess(downLoadBean.getPath());
             else
                 loadListener.onError(downLoadBean.getThrowable() == null ? new Throwable("未知错误") : downLoadBean.getThrowable());
         }

@@ -12,6 +12,6 @@ public abstract class OnDownLoadListener implements DownLoadProgressListener {
 
     public abstract void onError(Throwable throwable);
 
-    public abstract void onSuccess();
+    public abstract void onSuccess(String path);
 
 }

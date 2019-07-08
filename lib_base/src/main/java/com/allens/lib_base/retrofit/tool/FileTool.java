@@ -1,5 +1,6 @@
 package com.allens.lib_base.retrofit.tool;
 
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -70,7 +71,7 @@ public class FileTool {
         return newFilePath;
     }
 
-    public static DownLoadBean downToFile(ResponseBody responseBody, String savePath, String fileName, OnDownLoadListener loadListener) {
+    public static DownLoadBean downToFile(ResponseBody responseBody, String savePath, String fileName, Handler handler, OnDownLoadListener loadListener) {
         DownLoadBean loadBean = new DownLoadBean();
         try {
             RandomAccessFile randomAccessFile = null;
@@ -100,10 +101,15 @@ public class FileTool {
                     currentLength = currentLength + len;
                     final int terms = (int) (((float) currentLength) / (allLength) * 100); // 计算百分比
                     if (loadListener != null) {
-                        loadListener.update(currentLength, allLength, currentLength == allLength);
-                        loadListener.onProgress(terms);
+                        long finalCurrentLength = currentLength;
+                        long finalCurrentLength1 = currentLength;
+                        handler.post(() -> {
+                            loadListener.update(finalCurrentLength, allLength, finalCurrentLength1 == allLength);
+                            loadListener.onProgress(terms);
+                        });
                     }
                 }
+                loadBean.setPath(path);
                 loadBean.setIsSuccess(true);
                 return loadBean;
             } catch (Throwable e) {

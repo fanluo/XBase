@@ -3,7 +3,6 @@ package com.allens.allenstools.test_act;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -75,15 +74,17 @@ public class HttpAct extends BaseActivity {
     private void startDownLoad() {
 //        String url = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
         String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-        xHttp.doDownload(url, "sdcard/allens", "1212.jpg", new OnDownLoadListener() {
+        xHttp.doDownload(url, "sdcard/allens", new OnDownLoadListener() {
             @Override
             public void onError(Throwable throwable) {
                 LogHelper.d("download onError %s", throwable.getMessage());
+                test("download 失败" + throwable.getMessage());
             }
 
             @Override
-            public void onSuccess() {
-                LogHelper.d("download success");
+            public void onSuccess(String path) {
+                LogHelper.d("download success " + path);
+                test("download success " + path);
             }
 
             @Override
@@ -95,6 +96,7 @@ public class HttpAct extends BaseActivity {
             @Override
             public void onProgress(int progress) {
                 LogHelper.d("progress %s", progress);
+                test("进度-----》" + progress);
             }
         });
     }
@@ -117,15 +119,19 @@ public class HttpAct extends BaseActivity {
             @Override
             public void onSuccess(TestBean s) {
                 LogHelper.i("get 请求成功 %s, thread %s", s.toString(), Thread.currentThread().getName());
-                ((TextView) $(R.id.text)).setText("请求成功--->" + s.toString());
+                test("请求成功--->\" + s.toString()");
             }
 
             @Override
             public void onError(Throwable e) {
                 LogHelper.i("get 请求失败 %s, thread %s", e.getMessage(), Thread.currentThread().getName());
-                ((TextView) $(R.id.text)).setText("请求失败--->" + e.getMessage());
+                test("请求失败--->" + e.getMessage());
             }
         });
+    }
+
+    private void test(String info) {
+        ((TextView) $(R.id.text)).setText(info);
     }
 
     @Override

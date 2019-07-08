@@ -12,4 +12,6 @@ public class DownLoadBean {
     private Throwable throwable;
 
     private Boolean isSuccess;
+
+    private String path;
 }

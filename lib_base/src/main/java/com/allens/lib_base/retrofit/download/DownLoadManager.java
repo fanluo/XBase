@@ -1,5 +1,8 @@
 package com.allens.lib_base.retrofit.download;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
@@ -20,7 +23,26 @@ import retrofit2.Retrofit;
 public class DownLoadManager {
 
 
-    public static void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
+    private static DownLoadManager instance;
+    private final Handler handler;
+
+    public static DownLoadManager getInstance() {
+        if (instance == null) {
+            synchronized (DownLoadManager.class) {
+                if (instance == null) {
+                    instance = new DownLoadManager();
+                }
+            }
+        }
+        return instance;
+    }
+
+
+    private DownLoadManager(){
+        handler = new Handler(Looper.getMainLooper());
+    }
+
+    public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
         Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
         retrofit.create(ApiService.class)
                 .downloadFile(url)
@@ -28,13 +50,13 @@ public class DownLoadManager {
                 .unsubscribeOn(Schedulers.io())
                 .map(responseBody -> {
                     LogHelper.d("download map %s", responseBody.contentLength());
-                    return FileTool.downToFile(responseBody, savePath, name, loadListener);
+                    return FileTool.downToFile(responseBody, savePath, name, handler,loadListener);
                 })
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DownLoadObserver(loadListener));
     }
 
-    public static void startDownLoad(String url, String savePath, OnDownLoadListener loadListener) {
+    public void startDownLoad(String url, String savePath, OnDownLoadListener loadListener) {
         startDownLoad(url, savePath, url, loadListener);
     }
 }
