@@ -6,9 +6,11 @@ import android.os.Looper;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.HttpManager;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.allens.lib_base.retrofit.download.pool.DownLoadPool;
 import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.FileTool;
+import com.orhanobut.hawk.Hawk;
 
 import java.io.InputStream;
 
@@ -38,25 +40,31 @@ public class DownLoadManager {
     }
 
 
-    private DownLoadManager(){
+    private DownLoadManager() {
         handler = new Handler(Looper.getMainLooper());
     }
 
     public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
+        long currentLength = Hawk.get(url, 0L);
         Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
+        LogHelper.i("startDownLoad current %s",currentLength);
         retrofit.create(ApiService.class)
-                .downloadFile(url)
+                .downloadFile("bytes=" + currentLength + "-", url)
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
                 .map(responseBody -> {
                     LogHelper.d("download map %s", responseBody.contentLength());
-                    return FileTool.downToFile(responseBody, savePath, name, handler,loadListener);
+                    return FileTool.downToFile(url, currentLength, responseBody, savePath, name, handler, loadListener);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DownLoadObserver(loadListener));
+                .subscribe(new DownLoadObserver(url, loadListener));
     }
 
     public void startDownLoad(String url, String savePath, OnDownLoadListener loadListener) {
         startDownLoad(url, savePath, url, loadListener);
+    }
+
+    public void pause(String url) {
+        DownLoadPool.getInstance().remove(url);
     }
 }

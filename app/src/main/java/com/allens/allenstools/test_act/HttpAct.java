@@ -68,33 +68,38 @@ public class HttpAct extends BaseActivity {
             startDownLoad();
         });
 
+        $(R.id.pause_1).setOnClickListener(v -> {
+            xHttp.doPause(url);
+        });
+
 
     }
+    String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
     private void startDownLoad() {
 //        String url = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
-        String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+
         xHttp.doDownload(url, "sdcard/allens", new OnDownLoadListener() {
             @Override
-            public void onError(Throwable throwable) {
+            public void onError(String key, Throwable throwable) {
                 LogHelper.d("download onError %s", throwable.getMessage());
                 test("download 失败" + throwable.getMessage());
             }
 
             @Override
-            public void onSuccess(String path) {
+            public void onSuccess(String key, String path) {
                 LogHelper.d("download success " + path);
                 test("download success " + path);
             }
 
             @Override
-            public void update(long read, long count, boolean done) {
-                super.update(read, count, done);
-                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
+            public void update(String key, long read, long count, boolean done) {
+                super.update(key, read, count, done);
+//                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
             }
 
             @Override
-            public void onProgress(int progress) {
+            public void onProgress(String key, int progress) {
                 LogHelper.d("progress %s", progress);
                 test("进度-----》" + progress);
             }

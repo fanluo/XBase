@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.bean.DownLoadBean;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +72,18 @@ public class FileTool {
         return newFilePath;
     }
 
-    public static DownLoadBean downToFile(ResponseBody responseBody, String savePath, String fileName, Handler handler, OnDownLoadListener loadListener) {
+    /***
+     *
+     * @param url 下载地址 又被当做key来使用
+     * @param saveCurrentLength 查询到当前保存的长度
+     * @param responseBody 请求到的数据
+     * @param savePath 保存地址
+     * @param fileName 保存文件名称
+     * @param handler  用于切换progress 线程
+     * @param loadListener 监听
+     * @return 自定义的数据对象
+     */
+    public static DownLoadBean downToFile(String url, long saveCurrentLength, ResponseBody responseBody, String savePath, String fileName, Handler handler, OnDownLoadListener loadListener) {
         DownLoadBean loadBean = new DownLoadBean();
         try {
             RandomAccessFile randomAccessFile = null;
@@ -79,34 +91,43 @@ public class FileTool {
             InputStream inputStream = null;
             try {
 
-                String path = FileTool.getString(savePath, fileName);
+                String path = getString(savePath, fileName);
                 LogHelper.d("download save path %s", path);
                 File file = new File(path);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                 }
 
-                long allLength = responseBody.contentLength();
+                //数据总长度
+                long allLength = saveCurrentLength == 0 ? responseBody.contentLength() : saveCurrentLength + responseBody.contentLength();
 
                 inputStream = responseBody.byteStream();
                 randomAccessFile = new RandomAccessFile(file, "rwd");
                 channelOut = randomAccessFile.getChannel();
-                long currentLength = 0; //当前的长度
-                MappedByteBuffer mappedBuffer = channelOut.map(FileChannel.MapMode.READ_WRITE, 0, allLength);
+                long currentLength = saveCurrentLength; //当前的长度
+                MappedByteBuffer mappedBuffer = channelOut.map(FileChannel.MapMode.READ_WRITE, saveCurrentLength, allLength - saveCurrentLength);
                 byte[] buffer = new byte[1024 * 4];
                 int len;
+                int lastTerms = 0;
                 while ((len = inputStream.read(buffer)) != -1) {
-                    Log.e("log>>>>", "download read " + len);
+//                    Log.e("log>>>>", "download read " + len);
                     mappedBuffer.put(buffer, 0, len);
                     currentLength = currentLength + len;
                     final int terms = (int) (((float) currentLength) / (allLength) * 100); // 计算百分比
-                    if (loadListener != null) {
-                        long finalCurrentLength = currentLength;
-                        long finalCurrentLength1 = currentLength;
-                        handler.post(() -> {
-                            loadListener.update(finalCurrentLength, allLength, finalCurrentLength1 == allLength);
-                            loadListener.onProgress(terms);
-                        });
+                    if (terms != lastTerms) {
+                        lastTerms = terms;
+                        if (loadListener != null) {
+                            long finalCurrentLength = currentLength;
+                            Hawk.put(url, currentLength);
+                            if (currentLength == allLength) {
+                                //删除 key 不在记录下载的情况
+                                Hawk.delete(url);
+                            }
+                            handler.post(() -> {
+                                loadListener.update(url, finalCurrentLength, allLength, finalCurrentLength == allLength);
+                                loadListener.onProgress(url, terms);
+                            });
+                        }
                     }
                 }
                 loadBean.setPath(path);

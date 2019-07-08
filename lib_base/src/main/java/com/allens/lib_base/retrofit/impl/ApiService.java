@@ -51,10 +51,6 @@ public interface ApiService {
 
     @Streaming
     @GET
-    Observable<ResponseBody> downloadFile( @Url String url);
+    Observable<ResponseBody> downloadFile(@Header("RANGE") String start, @Url String url);
 
-
-    @Streaming
-    @GET
-    Call<ResponseBody> downloadCall(@Url String url);
 }

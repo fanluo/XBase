@@ -178,4 +178,8 @@ public class XHttp {
         DownLoadManager.getInstance().startDownLoad(url, filePath, loadListener);
     }
 
+    public void doPause(String url) {
+        DownLoadManager.getInstance().pause(url);
+    }
+
 }
