@@ -3,7 +3,6 @@ package com.allens.lib_base.retrofit;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
-import com.allens.lib_base.retrofit.download.HttpDownManager;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
@@ -155,7 +154,6 @@ public class XHttp {
     }
 
     public void doDownload(String url,String filePath){
-        HttpDownManager.getInstance().start(url,filePath);
     }
 
 }
