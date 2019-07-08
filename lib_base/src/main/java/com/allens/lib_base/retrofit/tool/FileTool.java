@@ -4,6 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.retrofit.download.bean.DownLoadBean;
+import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,31 +70,46 @@ public class FileTool {
         return newFilePath;
     }
 
-    public static boolean downToFile(ResponseBody responseBody, String savePath) {
+    public static DownLoadBean downToFile(ResponseBody responseBody, String savePath, String fileName, OnDownLoadListener loadListener) {
+        DownLoadBean loadBean = new DownLoadBean();
         try {
             RandomAccessFile randomAccessFile = null;
             FileChannel channelOut = null;
             InputStream inputStream = null;
             try {
-                File file = new File(savePath);
-                if (!file.exists())
-                    file.mkdirs();
+
+                String path = FileTool.getString(savePath, fileName);
+                LogHelper.d("download save path %s", path);
+                File file = new File(path);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+
                 long allLength = responseBody.contentLength();
 
                 inputStream = responseBody.byteStream();
                 randomAccessFile = new RandomAccessFile(file, "rwd");
                 channelOut = randomAccessFile.getChannel();
+                long currentLength = 0; //当前的长度
                 MappedByteBuffer mappedBuffer = channelOut.map(FileChannel.MapMode.READ_WRITE, 0, allLength);
                 byte[] buffer = new byte[1024 * 4];
                 int len;
                 while ((len = inputStream.read(buffer)) != -1) {
                     Log.e("log>>>>", "download read " + len);
                     mappedBuffer.put(buffer, 0, len);
+                    currentLength = currentLength + len;
+                    final int terms = (int) (((float) currentLength) / (allLength) * 100); // 计算百分比
+                    if (loadListener != null) {
+                        loadListener.update(currentLength, allLength, currentLength == allLength);
+                        loadListener.onProgress(terms);
+                    }
                 }
-                return true;
+                loadBean.setIsSuccess(true);
+                return loadBean;
             } catch (Throwable e) {
                 Log.e("log>>>>", "download error 1 " + e.getMessage());
-                return false;
+                loadBean.setThrowable(e);
+                return loadBean;
             } finally {
                 if (inputStream != null) {
                     inputStream.close();
@@ -104,7 +123,8 @@ public class FileTool {
             }
         } catch (Throwable e) {
             Log.e("log>>>>", "download error 2 " + e.getMessage());
-            return false;
+            loadBean.setThrowable(e);
+            return loadBean;
         }
     }
 }

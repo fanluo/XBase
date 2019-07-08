@@ -168,6 +168,11 @@ public class XHttp {
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
+    public void doDownload(String url, String filePath, String name, OnDownLoadListener loadListener) {
+        LogHelper.d("click download");
+        DownLoadManager.startDownLoad(url, filePath, name, loadListener);
+    }
+
     public void doDownload(String url, String filePath, OnDownLoadListener loadListener) {
         LogHelper.d("click download");
         DownLoadManager.startDownLoad(url, filePath, loadListener);

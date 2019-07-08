@@ -8,6 +8,10 @@ public abstract class OnDownLoadListener implements DownLoadProgressListener {
 
     }
 
+    public abstract void onProgress(int progress);
+
     public abstract void onError(Throwable throwable);
+
+    public abstract void onSuccess();
 
 }

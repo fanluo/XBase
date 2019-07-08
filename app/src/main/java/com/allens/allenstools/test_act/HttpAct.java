@@ -75,10 +75,26 @@ public class HttpAct extends BaseActivity {
     private void startDownLoad() {
 //        String url = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
         String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-        xHttp.doDownload(url, "1111.mp4", new OnDownLoadListener() {
+        xHttp.doDownload(url, "sdcard/allens", "1212.jpg", new OnDownLoadListener() {
             @Override
             public void onError(Throwable throwable) {
+                LogHelper.d("download onError %s", throwable.getMessage());
+            }
 
+            @Override
+            public void onSuccess() {
+                LogHelper.d("download success");
+            }
+
+            @Override
+            public void update(long read, long count, boolean done) {
+                super.update(read, count, done);
+                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                LogHelper.d("progress %s", progress);
             }
         });
     }
