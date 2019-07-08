@@ -22,6 +22,7 @@ public class HttpManager {
     private final HttpConfig.HttpConfigBuilder httpConfigBuilder;
     @Getter
     private Retrofit retrofit;
+    private Retrofit retrofitDownLoad;
 
 
     private HttpManager() {
@@ -66,6 +67,22 @@ public class HttpManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return this;
+    }
+
+    /***
+     * 下载和网络请求使用不同的retrofit
+     * 防止@Steaming 不起作用
+     * @return Retrofit
+     */
+    public Retrofit createDownLoadRetrofit() {
+        if (retrofitDownLoad != null) {
+            return retrofitDownLoad;
+        }
+        retrofitDownLoad = new Retrofit.Builder()
+                .baseUrl("http://1212/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        return retrofitDownLoad;
     }
 
     //获取接口类

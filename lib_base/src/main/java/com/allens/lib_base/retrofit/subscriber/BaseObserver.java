@@ -1,8 +1,6 @@
 package com.allens.lib_base.retrofit.subscriber;
 
 
-import com.allens.lib_base.retrofit.pool.RxApiManager;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 

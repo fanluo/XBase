@@ -8,6 +8,7 @@ import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
@@ -48,10 +49,12 @@ public interface ApiService {
     @PUT()
     Observable<ResponseBody> doPut(@Url String url, @FieldMap Map<String, Object> maps);
 
-
-    /*断点续传下载接口*/
-    @Streaming/*大文件需要加入这个判断，防止下载过程中写入到内存中*/
+    @Streaming
     @GET
-    Observable<ResponseBody> downloadFile(@Header("RANGE") String start, @Url String url);
+    Observable<ResponseBody> downloadFile( @Url String url);
 
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadCall(@Url String url);
 }

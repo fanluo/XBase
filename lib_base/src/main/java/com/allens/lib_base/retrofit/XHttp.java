@@ -1,20 +1,35 @@
 package com.allens.lib_base.retrofit;
 
+import android.util.Log;
+
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.retrofit.download.DownLoadManager;
+import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
-import com.allens.lib_base.retrofit.pool.RxApiManager;
 import com.allens.lib_base.retrofit.provider.ObservableProvider;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class XHttp {
 
@@ -153,7 +168,9 @@ public class XHttp {
                 .subscribe(new BeanObserver<T>(tClass, listener));
     }
 
-    public void doDownload(String url,String filePath){
+    public void doDownload(String url, String filePath, OnDownLoadListener loadListener) {
+        LogHelper.d("click download");
+        DownLoadManager.startDownLoad(url, filePath, loadListener);
     }
 
 }
