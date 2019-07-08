@@ -3,6 +3,7 @@ package com.allens.lib_base.retrofit;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
+import com.allens.lib_base.retrofit.download.HttpDownManager;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.pool.RxApiManager;
@@ -14,10 +15,11 @@ import com.trello.rxlifecycle3.android.FragmentEvent;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import retrofit2.Retrofit;
+import lombok.Getter;
 
 public class XHttp {
 
+    @Getter
     private static String url;
 
     public static final class Builder {
@@ -150,6 +152,10 @@ public class XHttp {
         ObservableProvider.getObservableDelete(parameter, listener)
                 .compose(context.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BeanObserver<T>(tClass, listener));
+    }
+
+    public void doDownload(String url,String filePath){
+        HttpDownManager.getInstance().start(url,filePath);
     }
 
 }

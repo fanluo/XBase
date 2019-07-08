@@ -49,8 +49,9 @@ public interface ApiService {
     Observable<ResponseBody> doPut(@Url String url, @FieldMap Map<String, Object> maps);
 
 
-    @Streaming //大文件时要加不然会OOM
+    /*断点续传下载接口*/
+    @Streaming/*大文件需要加入这个判断，防止下载过程中写入到内存中*/
     @GET
-    Observable<ResponseBody> downloadFile(@Header("Range") String range, @Url String fileUrl);
+    Observable<ResponseBody> downloadFile(@Header("RANGE") String start, @Url String url);
 
 }

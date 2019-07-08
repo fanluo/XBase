@@ -12,7 +12,6 @@ import com.allens.allenstools.TestBean;
 import com.allens.lib_base.base.BaseActivity;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.XHttp;
-import com.allens.lib_base.retrofit.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 
 import java.util.Map;
@@ -64,6 +63,17 @@ public class HttpAct extends BaseActivity {
         $(R.id.button_get).setOnClickListener(v -> {
             do_body();
         });
+
+        $(R.id.start_download).setOnClickListener(v -> {
+            startDownLoad();
+        });
+
+
+    }
+
+    private void startDownLoad() {
+        String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+        xHttp.doDownload(url,"1111.mp4");
     }
 
     private void do_body() {
@@ -99,6 +109,6 @@ public class HttpAct extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LogHelper.i("activity finish ");
-        xHttp.cancelAllDownload();
+//        xHttp.cancelAllDownload();
     }
 }
