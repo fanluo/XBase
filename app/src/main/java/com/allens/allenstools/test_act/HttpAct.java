@@ -65,7 +65,7 @@ public class HttpAct extends BaseActivity {
         });
 
         $(R.id.start_download).setOnClickListener(v -> {
-            xHttp.doDownload(url, "sdcard/allens", "text1.mp4", loadListener);
+            xHttp.doDownloadBindAct(this, url, "sdcard/allens", "text1.mp4", loadListener);
         });
 
         $(R.id.pause_1).setOnClickListener(v -> {

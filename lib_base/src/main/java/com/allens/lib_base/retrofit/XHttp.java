@@ -170,14 +170,31 @@ public class XHttp {
     }
 
     public void doDownload(String url, String filePath, String name, OnDownLoadListener loadListener) {
-        LogHelper.d("click download");
         DownLoadManager.getInstance().startDownLoad(url, filePath, name, loadListener);
     }
 
+
+    public void doDownloadBindAct(BaseActivity activity, String url, String filePath, String name, OnDownLoadListener loadListener) {
+        DownLoadManager.getInstance().startDownLoad(activity, url, filePath, name, loadListener);
+    }
+
+    public void doDownloadBindFragment(BaseFragment fragment, String url, String filePath, String name, OnDownLoadListener loadListener) {
+        DownLoadManager.getInstance().startDownLoad(fragment, url, filePath, name, loadListener);
+    }
+
+
     public void doDownload(String url, String filePath, OnDownLoadListener loadListener) {
-        LogHelper.d("click download");
         DownLoadManager.getInstance().startDownLoad(url, filePath, loadListener);
     }
+
+    public void doDownloadBindAct(BaseActivity activity, String url, String filePath, OnDownLoadListener loadListener) {
+        DownLoadManager.getInstance().startDownLoad(activity, url, filePath, loadListener);
+    }
+
+    public void doDownloadBindFragment(BaseFragment fragment, String url, String filePath, OnDownLoadListener loadListener) {
+        DownLoadManager.getInstance().startDownLoad(fragment, url, filePath, loadListener);
+    }
+
 
     public void doDownLoadPause(String url) {
         DownLoadManager.getInstance().pause(url);

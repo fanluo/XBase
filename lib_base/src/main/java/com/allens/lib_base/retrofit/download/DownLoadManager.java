@@ -1,25 +1,33 @@
 package com.allens.lib_base.retrofit.download;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.allens.lib_base.base.BaseActivity;
+import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.HttpManager;
+import com.allens.lib_base.retrofit.download.bean.DownLoadBean;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.download.pool.DownLoadPool;
 import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.FileTool;
 import com.orhanobut.hawk.Hawk;
+import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.trello.rxlifecycle3.android.FragmentEvent;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
 public class DownLoadManager {
@@ -44,18 +52,46 @@ public class DownLoadManager {
         handler = new Handler(Looper.getMainLooper());
     }
 
+//    /***
+//     *
+//     * @param url 下载地址
+//     * @param savePath 保存路径
+//     * @param name 文件名称
+//     * @param loadListener 监听
+//     */
+//    public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
+//        long currentLength = Hawk.get(url, 0L);
+//        Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
+//        LogHelper.i("startDownLoad current %s", currentLength);
+//        retrofit.create(ApiService.class)
+//                .downloadFile("bytes=" + currentLength + "-", url)
+//                .subscribeOn(Schedulers.io())//在子线程取数据
+//                .unsubscribeOn(Schedulers.io())
+//                .map(responseBody -> {
+//                    LogHelper.d("download map %s", responseBody.contentLength());
+//                    DownLoadPool.getInstance().add(url, loadListener);
+//                    return FileTool.downToFile(url, currentLength, responseBody, savePath, name, handler, loadListener);
+//                })
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new DownLoadObserver(url, loadListener));
+//    }
+
     /***
      *
+     *
+     * @param activity    绑定act
+     * @param  fragment 绑定fragment
      * @param url 下载地址
      * @param savePath 保存路径
      * @param name 文件名称
      * @param loadListener 监听
      */
-    public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
+    @SuppressLint("CheckResult")
+    private void startDownLoad(BaseActivity activity, BaseFragment fragment, String url, String savePath, String name, OnDownLoadListener loadListener) {
         long currentLength = Hawk.get(url, 0L);
         Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
         LogHelper.i("startDownLoad current %s", currentLength);
-        retrofit.create(ApiService.class)
+        Observable<DownLoadBean> observable = retrofit.create(ApiService.class)
                 .downloadFile("bytes=" + currentLength + "-", url)
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
@@ -64,12 +100,41 @@ public class DownLoadManager {
                     DownLoadPool.getInstance().add(url, loadListener);
                     return FileTool.downToFile(url, currentLength, responseBody, savePath, name, handler, loadListener);
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DownLoadObserver(url, loadListener));
+                .observeOn(AndroidSchedulers.mainThread());
+        if (activity != null) {
+            LogHelper.i("bind by act destroy");
+            observable.compose(activity.bindUntilEvent(ActivityEvent.DESTROY));
+        } else if (fragment != null) {
+            LogHelper.i("bind by fragment destroy");
+            observable.compose(fragment.bindUntilEvent(FragmentEvent.DESTROY));
+        }
+        observable.subscribe(new DownLoadObserver(url, loadListener));
     }
 
+    public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
+        startDownLoad(null, null, url, savePath, name, loadListener);
+    }
+
+
+    public void startDownLoad(BaseActivity activity, String url, String savePath, String name, OnDownLoadListener loadListener) {
+        startDownLoad(activity, null, url, savePath, name, loadListener);
+    }
+
+    public void startDownLoad(BaseFragment fragment, String url, String savePath, String name, OnDownLoadListener loadListener) {
+        startDownLoad(null, fragment, url, savePath, name, loadListener);
+    }
+
+
     public void startDownLoad(String url, String savePath, OnDownLoadListener loadListener) {
-        startDownLoad(url, savePath, url, loadListener);
+        startDownLoad(null, null, url, savePath, url, loadListener);
+    }
+
+    public void startDownLoad(BaseActivity activity, String url, String savePath, OnDownLoadListener loadListener) {
+        startDownLoad(activity, null, url, savePath, url, loadListener);
+    }
+
+    public void startDownLoad(BaseFragment fragment, String url, String savePath, OnDownLoadListener loadListener) {
+        startDownLoad(null, fragment, url, savePath, url, loadListener);
     }
 
     /**
