@@ -228,4 +228,94 @@ public class MyApp extends BaseApplication {
 
   public void doDownLoadCancelAll() {
 ```
+## 5. mvp base 封装
 
+- Contract
+
+```
+public interface TestMvpContract {
+    interface Model extends BaseModel {
+    }
+
+    interface View extends BaseView {
+
+        void showToast();
+    }
+
+    interface Presenter {
+
+        void testToast();
+    }
+}
+
+```
+
+- model
+
+```
+public class TestMvpModel implements TestMvpContract.Model {
+}
+```
+- presenter
+
+```
+public class TestMvpPresenter extends BasePresenter<TestMvpContract.Model, TestMvpContract.View> implements TestMvpContract.Presenter {
+    @Override
+    protected void onViewDestroy() {
+
+    }
+
+    @Override
+    public void testToast() {
+
+        getView().showToast();
+    }
+}
+
+```
+
+- act
+
+```
+public class TestMvpAct extends BaseMvpActivity<TestMvpModel, TestMvpContract.View, TestMvpPresenter> implements TestMvpContract.View {
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_mvp;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initListener() {
+        $(R.id.btn).setOnClickListener(v -> {
+            presenter.testToast();
+        });
+
+    }
+
+
+    @Override
+    public TestMvpModel createModel() {
+        return new TestMvpModel();
+    }
+
+    @Override
+    public TestMvpContract.View createView() {
+        return this;
+    }
+
+    @Override
+    public TestMvpPresenter createPresenter() {
+        return new TestMvpPresenter();
+    }
+
+    @Override
+    public void showToast() {
+        toast("测试成功");
+    }
+}
+
+```
