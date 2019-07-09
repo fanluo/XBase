@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
@@ -20,13 +21,13 @@ public class DownLoadPool {
     private static DownLoadPool instance;
     //任务
     @Getter
-    private final HashMap<String, Disposable> hashMap;
+    private final ConcurrentHashMap<String, Disposable> hashMap;
 
     @Getter
     //监听
-    private final HashMap<String, OnDownLoadListener> listenerHashMap;
+    private final ConcurrentHashMap<String, OnDownLoadListener> listenerHashMap;
     //下载位置
-    private final HashMap<String, String> pathMap;
+    private final ConcurrentHashMap<String, String> pathMap;
 
 
     public static DownLoadPool getInstance() {
@@ -42,9 +43,9 @@ public class DownLoadPool {
 
 
     private DownLoadPool() {
-        hashMap = new HashMap<>();
-        listenerHashMap = new HashMap<>();
-        pathMap = new HashMap<>();
+        hashMap = new ConcurrentHashMap<>();
+        listenerHashMap = new ConcurrentHashMap<>();
+        pathMap = new ConcurrentHashMap<>();
     }
 
     public void add(String url, Disposable disposable) {
@@ -86,11 +87,6 @@ public class DownLoadPool {
         }
     }
 
-    public void clearAll() {
-        for (Map.Entry<String, Disposable> entry : hashMap.entrySet()) {
-            remove(entry.getKey());
-        }
-    }
 
 
 }

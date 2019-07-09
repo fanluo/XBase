@@ -65,7 +65,7 @@ public class HttpAct extends BaseActivity {
         });
 
         $(R.id.start_download).setOnClickListener(v -> {
-            xHttp.doDownload(url, "sdcard/allens","text1.mp4", loadListener);
+            xHttp.doDownload(url, "sdcard/allens", "text1.mp4", loadListener);
         });
 
         $(R.id.pause_1).setOnClickListener(v -> {
@@ -74,10 +74,16 @@ public class HttpAct extends BaseActivity {
         $(R.id.cancel).setOnClickListener(v -> {
             xHttp.doDownLoadCancel(url);
         });
+        $(R.id.cancel_all).setOnClickListener(v -> {
+            xHttp.doDownLoadCancelAll();
+        });
+        $(R.id.pause_all).setOnClickListener(v -> {
+            xHttp.doDownLoadPauseAll();
+        });
 
 
         $(R.id.start_download_2).setOnClickListener(v -> {
-            xHttp.doDownload(url2, "sdcard/allens","text2.mp4", loadListener);
+            xHttp.doDownload(url2, "sdcard/allens", "text2.mp4", loadListener);
         });
 
         $(R.id.pause_2).setOnClickListener(v -> {

@@ -15,8 +15,10 @@ import com.orhanobut.hawk.Hawk;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
@@ -87,7 +89,7 @@ public class DownLoadManager {
      * 暂停所有下载
      */
     public void pauseAll() {
-        HashMap<String, OnDownLoadListener> hashMap = DownLoadPool.getInstance().getListenerHashMap();
+        ConcurrentHashMap<String, OnDownLoadListener> hashMap = DownLoadPool.getInstance().getListenerHashMap();
         for (Map.Entry<String, OnDownLoadListener> entry : hashMap.entrySet()) {
             pause(entry.getKey());
         }
@@ -97,7 +99,10 @@ public class DownLoadManager {
      * 停止所有下载
      */
     public void stopAll() {
-        DownLoadPool.getInstance().clearAll();
+        ConcurrentHashMap<String, Disposable> hashMap = DownLoadPool.getInstance().getHashMap();
+        for (Map.Entry<String, Disposable> entry : hashMap.entrySet()) {
+            stop(entry.getKey());
+        }
     }
 
 
