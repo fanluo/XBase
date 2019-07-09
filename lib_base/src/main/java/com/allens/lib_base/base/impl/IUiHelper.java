@@ -30,4 +30,20 @@ public interface IUiHelper {
      * @return
      */
     String getResId(int id);
+
+
+    /* 获取SharedPreference 参数*/
+    <T> T getPref(String key);
+
+    <T> T getPref(String key, T defaultValue);
+
+    <T> boolean putPref(String key, T value);
+
+    boolean deleteAllPref();
+
+    boolean deletePref(String key);
+
+    long getPrefCount();
+
+    boolean containsPref(String key);
 }

@@ -118,7 +118,7 @@ public class MyLogStrategy implements LogStrategy {
          *
          *
          * if file size more than maxFile
-         * delete fist file
+         * deletePref fist file
          */
         private void delete() {
             File[] files = getFiles(folder);

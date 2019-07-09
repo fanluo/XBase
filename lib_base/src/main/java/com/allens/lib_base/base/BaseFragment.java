@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.allens.lib_base.base.impl.IUiHelper;
+import com.orhanobut.hawk.Hawk;
 import com.trello.rxlifecycle3.components.support.RxFragment;
 
 public abstract class BaseFragment extends RxFragment implements IUiHelper {
@@ -130,5 +131,47 @@ public abstract class BaseFragment extends RxFragment implements IUiHelper {
     @Override
     public String getResId(int id) {
         return getResources().getString(id);
+    }
+
+
+    /**
+     * =======================================================================================================================
+     * 获取SharedPreference
+     * =======================================================================================================================
+     */
+
+    @Override
+    public <T> T getPref(String key) {
+        return Hawk.get(key);
+    }
+
+    @Override
+    public <T> T getPref(String key, T defaultValue) {
+        return Hawk.get(key, defaultValue);
+    }
+
+    @Override
+    public boolean deletePref(String key) {
+        return Hawk.delete(key);
+    }
+
+    @Override
+    public boolean deleteAllPref() {
+        return Hawk.deleteAll();
+    }
+
+    @Override
+    public long getPrefCount() {
+        return Hawk.count();
+    }
+
+    @Override
+    public <T> boolean putPref(String key, T value) {
+        return Hawk.put(key, value);
+    }
+
+    @Override
+    public boolean containsPref(String key) {
+        return Hawk.contains(key);
     }
 }

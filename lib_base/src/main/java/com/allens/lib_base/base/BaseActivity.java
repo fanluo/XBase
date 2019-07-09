@@ -27,6 +27,7 @@ import com.allens.lib_base.base.impl.ITopView;
 import com.allens.lib_base.base.impl.IUiHelper;
 import com.allens.lib_base.base.tools.ActivityStack;
 import com.allens.lib_base.utils.TouchHelper;
+import com.orhanobut.hawk.Hawk;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
@@ -312,5 +313,47 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void toast(String msg) {
         Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    /**
+     * =======================================================================================================================
+     * 获取SharedPreference
+     * =======================================================================================================================
+     */
+
+    @Override
+    public <T> T getPref(String key) {
+        return Hawk.get(key);
+    }
+
+    @Override
+    public <T> T getPref(String key, T defaultValue) {
+        return Hawk.get(key, defaultValue);
+    }
+
+    @Override
+    public boolean deletePref(String key) {
+        return Hawk.delete(key);
+    }
+
+    @Override
+    public boolean deleteAllPref() {
+        return Hawk.deleteAll();
+    }
+
+    @Override
+    public long getPrefCount() {
+        return Hawk.count();
+    }
+
+    @Override
+    public <T> boolean putPref(String key, T value) {
+        return Hawk.put(key, value);
+    }
+
+    @Override
+    public boolean containsPref(String key) {
+        return Hawk.contains(key);
     }
 }

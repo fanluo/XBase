@@ -127,7 +127,7 @@ public class HttpAct extends BaseActivity {
         @Override
         public void update(String key, long read, long count, boolean done) {
             super.update(key, read, count, done);
-//            LogHelper.d(key + " download update read %s , count %s, done %s", read, count, done);
+//            LogHelper.d(key + " download update read %s , getPrefCount %s, done %s", read, getPrefCount, done);
         }
 
         @Override
