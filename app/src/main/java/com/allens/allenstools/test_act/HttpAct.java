@@ -99,6 +99,12 @@ public class HttpAct extends BaseActivity {
             }
 
             @Override
+            public void onPause(String key) {
+                super.onPause(key);
+                test("download onPause " + key);
+            }
+
+            @Override
             public void onProgress(String key, int progress) {
                 LogHelper.d("progress %s", progress);
                 test("进度-----》" + progress);

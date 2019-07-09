@@ -1,5 +1,6 @@
 package com.allens.lib_base.retrofit.subscriber;
 
+import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.bean.DownLoadBean;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
 import com.allens.lib_base.retrofit.download.pool.DownLoadPool;
@@ -41,7 +42,9 @@ public class DownLoadObserver extends BaseObserver<DownLoadBean> {
 
     @Override
     public void onComplete() {
+        LogHelper.i("download complete");
         DownLoadPool.getInstance().remove(url);
+        DownLoadPool.getInstance().getListenerHashMap().remove(url);
         if (loadListener != null) {
             if (downLoadBean.getIsSuccess() != null && downLoadBean.getIsSuccess())
                 loadListener.onSuccess(url, downLoadBean.getPath());

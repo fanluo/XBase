@@ -47,13 +47,14 @@ public class DownLoadManager {
     public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
         long currentLength = Hawk.get(url, 0L);
         Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
-        LogHelper.i("startDownLoad current %s",currentLength);
+        LogHelper.i("startDownLoad current %s", currentLength);
         retrofit.create(ApiService.class)
                 .downloadFile("bytes=" + currentLength + "-", url)
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
                 .map(responseBody -> {
                     LogHelper.d("download map %s", responseBody.contentLength());
+                    DownLoadPool.getInstance().getListenerHashMap().put(url, loadListener);
                     return FileTool.downToFile(url, currentLength, responseBody, savePath, name, handler, loadListener);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -65,6 +66,10 @@ public class DownLoadManager {
     }
 
     public void pause(String url) {
+        OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListenerHashMap().get(url);
+        LogHelper.i("download pause listener %s", onDownLoadListener);
+        if (onDownLoadListener != null)
+            onDownLoadListener.onPause(url);
         DownLoadPool.getInstance().remove(url);
     }
 }
