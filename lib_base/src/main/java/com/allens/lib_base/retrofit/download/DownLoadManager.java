@@ -13,6 +13,8 @@ import com.allens.lib_base.retrofit.tool.FileTool;
 import com.orhanobut.hawk.Hawk;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,6 +46,13 @@ public class DownLoadManager {
         handler = new Handler(Looper.getMainLooper());
     }
 
+    /***
+     *
+     * @param url 下载地址
+     * @param savePath 保存路径
+     * @param name 文件名称
+     * @param loadListener 监听
+     */
     public void startDownLoad(String url, String savePath, String name, OnDownLoadListener loadListener) {
         long currentLength = Hawk.get(url, 0L);
         Retrofit retrofit = HttpManager.create().createDownLoadRetrofit();
@@ -65,11 +74,26 @@ public class DownLoadManager {
         startDownLoad(url, savePath, url, loadListener);
     }
 
+    /**
+     * 暂停 下载
+     *
+     * @param url url
+     */
     public void pause(String url) {
         OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListenerHashMap().get(url);
         LogHelper.i("download pause listener %s", onDownLoadListener);
         if (onDownLoadListener != null)
             onDownLoadListener.onPause(url);
-        DownLoadPool.getInstance().remove(url);
+        DownLoadPool.getInstance().pause(url);
+    }
+
+    /***
+     * 暂停所有下载
+     */
+    public void pauseAll() {
+        HashMap<String, OnDownLoadListener> hashMap = DownLoadPool.getInstance().getListenerHashMap();
+        for (Map.Entry<String, OnDownLoadListener> entry : hashMap.entrySet()) {
+            pause(entry.getKey());
+        }
     }
 }

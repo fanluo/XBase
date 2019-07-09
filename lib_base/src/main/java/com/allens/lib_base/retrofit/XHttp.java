@@ -7,6 +7,7 @@ import com.allens.lib_base.base.BaseFragment;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.allens.lib_base.retrofit.download.pool.DownLoadPool;
 import com.allens.lib_base.retrofit.impl.ApiService;
 import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
@@ -178,8 +179,12 @@ public class XHttp {
         DownLoadManager.getInstance().startDownLoad(url, filePath, loadListener);
     }
 
-    public void doPause(String url) {
+    public void doDownLoadPause(String url) {
         DownLoadManager.getInstance().pause(url);
+    }
+
+    public void doDownLoadPauseAll() {
+        DownLoadManager.getInstance().pauseAll();
     }
 
 }

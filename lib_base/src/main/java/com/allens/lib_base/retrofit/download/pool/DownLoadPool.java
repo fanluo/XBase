@@ -48,6 +48,14 @@ public class DownLoadPool {
             disposable.dispose();
         }
         hashMap.remove(url);
+        listenerHashMap.remove(url);
+    }
+
+    public void pause(String url) {
+        Disposable disposable = hashMap.get(url);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
     public void clearAll() {

@@ -69,7 +69,7 @@ public class HttpAct extends BaseActivity {
         });
 
         $(R.id.pause_1).setOnClickListener(v -> {
-            xHttp.doPause(url);
+            xHttp.doDownLoadPause(url);
         });
 
 
