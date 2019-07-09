@@ -71,9 +71,13 @@ public class HttpAct extends BaseActivity {
         $(R.id.pause_1).setOnClickListener(v -> {
             xHttp.doDownLoadPause(url);
         });
+        $(R.id.cancel).setOnClickListener(v -> {
+            xHttp.doDownLoadCancel(url);
+        });
 
 
     }
+
     String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
     private void startDownLoad() {
@@ -95,13 +99,19 @@ public class HttpAct extends BaseActivity {
             @Override
             public void update(String key, long read, long count, boolean done) {
                 super.update(key, read, count, done);
-//                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
+                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
             }
 
             @Override
             public void onPause(String key) {
                 super.onPause(key);
                 test("download onPause " + key);
+            }
+
+            @Override
+            public void onCancel(String key) {
+                super.onCancel(key);
+                test("download onCancel " + key);
             }
 
             @Override
@@ -129,13 +139,13 @@ public class HttpAct extends BaseActivity {
 
             @Override
             public void onSuccess(TestBean s) {
-                LogHelper.i("get 请求成功 %s, thread %s", s.toString(), Thread.currentThread().getName());
+                LogHelper.i("getListener 请求成功 %s, thread %s", s.toString(), Thread.currentThread().getName());
                 test("请求成功--->\" + s.toString()");
             }
 
             @Override
             public void onError(Throwable e) {
-                LogHelper.i("get 请求失败 %s, thread %s", e.getMessage(), Thread.currentThread().getName());
+                LogHelper.i("getListener 请求失败 %s, thread %s", e.getMessage(), Thread.currentThread().getName());
                 test("请求失败--->" + e.getMessage());
             }
         });

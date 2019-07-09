@@ -22,7 +22,7 @@ public abstract class OnDownLoadListener implements DownLoadProgressListener {
 
     }
 
-    public void cancel(String key) {
+    public void onCancel(String key) {
 
     }
 

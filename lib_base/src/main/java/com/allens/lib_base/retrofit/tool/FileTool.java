@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.bean.DownLoadBean;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.allens.lib_base.retrofit.download.pool.DownLoadPool;
 import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
@@ -97,6 +98,7 @@ public class FileTool {
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                 }
+                DownLoadPool.getInstance().add(url, path);
 
                 //数据总长度
                 long allLength = saveCurrentLength == 0 ? responseBody.contentLength() : saveCurrentLength + responseBody.contentLength();

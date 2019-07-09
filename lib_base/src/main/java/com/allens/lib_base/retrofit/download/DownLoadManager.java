@@ -12,16 +12,12 @@ import com.allens.lib_base.retrofit.subscriber.DownLoadObserver;
 import com.allens.lib_base.retrofit.tool.FileTool;
 import com.orhanobut.hawk.Hawk;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
 public class DownLoadManager {
@@ -63,7 +59,7 @@ public class DownLoadManager {
                 .unsubscribeOn(Schedulers.io())
                 .map(responseBody -> {
                     LogHelper.d("download map %s", responseBody.contentLength());
-                    DownLoadPool.getInstance().getListenerHashMap().put(url, loadListener);
+                    DownLoadPool.getInstance().add(url, loadListener);
                     return FileTool.downToFile(url, currentLength, responseBody, savePath, name, handler, loadListener);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +76,7 @@ public class DownLoadManager {
      * @param url url
      */
     public void pause(String url) {
-        OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListenerHashMap().get(url);
+        OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListener(url);
         LogHelper.i("download pause listener %s", onDownLoadListener);
         if (onDownLoadListener != null)
             onDownLoadListener.onPause(url);
@@ -95,5 +91,24 @@ public class DownLoadManager {
         for (Map.Entry<String, OnDownLoadListener> entry : hashMap.entrySet()) {
             pause(entry.getKey());
         }
+    }
+
+
+    public void stop(String url) {
+        OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListenerHashMap().get(url);
+        LogHelper.i("download cancel listener %s", onDownLoadListener);
+        if (onDownLoadListener != null)
+            onDownLoadListener.onCancel(url);
+        //删除已经下载的部分文件
+        String downLoadPath = DownLoadPool.getInstance().getDownLoadPath(url);
+        LogHelper.i("cancel download  path %s", downLoadPath);
+        if (downLoadPath != null && !downLoadPath.isEmpty()) {
+            File file = new File(downLoadPath);
+            LogHelper.i("file is exits %s",file.exists());
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        DownLoadPool.getInstance().remove(url);
     }
 }

@@ -79,7 +79,7 @@ public class ActivityStack {
         }
         Activity activity = activityStack.peekLast();
 
-//        LogUtils.v(TAG,"get current activity:" + activity.getClass().getSimpleName());
+//        LogUtils.v(TAG,"getListener current activity:" + activity.getClass().getSimpleName());
         return activity;
     }
 

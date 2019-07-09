@@ -2,8 +2,10 @@ package com.allens.lib_base.retrofit.download.pool;
 
 import android.os.Handler;
 
+import com.allens.lib_base.log.LogHelper;
 import com.allens.lib_base.retrofit.download.DownLoadManager;
 import com.allens.lib_base.retrofit.download.impl.OnDownLoadListener;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,10 +18,15 @@ import lombok.Getter;
 public class DownLoadPool {
 
     private static DownLoadPool instance;
+    //任务
     private final HashMap<String, Disposable> hashMap;
 
     @Getter
+    //监听
     private final HashMap<String, OnDownLoadListener> listenerHashMap;
+    //下载位置
+    private final HashMap<String, String> pathMap;
+
 
     public static DownLoadPool getInstance() {
         if (instance == null) {
@@ -36,10 +43,28 @@ public class DownLoadPool {
     private DownLoadPool() {
         hashMap = new HashMap<>();
         listenerHashMap = new HashMap<>();
+        pathMap = new HashMap<>();
     }
 
     public void add(String url, Disposable disposable) {
         hashMap.put(url, disposable);
+    }
+
+    public void add(String url, String path) {
+        pathMap.put(url, path);
+    }
+
+    public void add(String url, OnDownLoadListener loadListener) {
+        listenerHashMap.put(url, loadListener);
+    }
+
+    public OnDownLoadListener getListener(String url) {
+        return listenerHashMap.get(url);
+    }
+
+    public String getDownLoadPath(String url) {
+        LogHelper.i("path Map %s", pathMap);
+        return pathMap.get(url);
     }
 
     public void remove(String url) {
@@ -49,6 +74,8 @@ public class DownLoadPool {
         }
         hashMap.remove(url);
         listenerHashMap.remove(url);
+        pathMap.remove(url);
+        Hawk.delete(url);
     }
 
     public void pause(String url) {
@@ -63,5 +90,6 @@ public class DownLoadPool {
             remove(entry.getKey());
         }
     }
+
 
 }

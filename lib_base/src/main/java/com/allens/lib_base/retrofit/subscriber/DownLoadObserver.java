@@ -44,7 +44,6 @@ public class DownLoadObserver extends BaseObserver<DownLoadBean> {
     public void onComplete() {
         LogHelper.i("download complete");
         DownLoadPool.getInstance().remove(url);
-        DownLoadPool.getInstance().getListenerHashMap().remove(url);
         if (loadListener != null) {
             if (downLoadBean.getIsSuccess() != null && downLoadBean.getIsSuccess())
                 loadListener.onSuccess(url, downLoadBean.getPath());
