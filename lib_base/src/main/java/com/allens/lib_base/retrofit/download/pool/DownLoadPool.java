@@ -19,6 +19,7 @@ public class DownLoadPool {
 
     private static DownLoadPool instance;
     //任务
+    @Getter
     private final HashMap<String, Disposable> hashMap;
 
     @Getter

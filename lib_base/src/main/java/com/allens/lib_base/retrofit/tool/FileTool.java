@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
 public class FileTool {
@@ -121,13 +122,12 @@ public class FileTool {
                         if (loadListener != null) {
                             long finalCurrentLength = currentLength;
                             Hawk.put(url, currentLength);
-                            if (currentLength == allLength) {
-                                //删除 key 不在记录下载的情况
-                                Hawk.delete(url);
-                            }
                             handler.post(() -> {
-                                loadListener.update(url, finalCurrentLength, allLength, finalCurrentLength == allLength);
-                                loadListener.onProgress(url, terms);
+                                Disposable disposable = DownLoadPool.getInstance().getHashMap().get(url);
+                                if (disposable != null && !disposable.isDisposed()) {
+                                    loadListener.update(url, finalCurrentLength, allLength, finalCurrentLength == allLength);
+                                    loadListener.onProgress(url, terms);
+                                }
                             });
                         }
                     }

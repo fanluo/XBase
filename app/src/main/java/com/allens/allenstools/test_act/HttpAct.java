@@ -91,9 +91,11 @@ public class HttpAct extends BaseActivity {
     }
 
     String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    String url2 = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+//    String url2 = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+//    String url2 = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
-//    String url2 = "http://v.ysbang.cn//data/video/2015/rkb/2015rkb01.mp4";
+
+    String url2 = "http://v.ysbang.cn//data/video/2015/rkb/2015rkb01.mp4";
 
 //    String url2 = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
 
