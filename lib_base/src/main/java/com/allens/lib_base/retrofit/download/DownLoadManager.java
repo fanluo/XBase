@@ -93,7 +93,18 @@ public class DownLoadManager {
         }
     }
 
+    /***
+     * 停止所有下载
+     */
+    public void stopAll() {
+        DownLoadPool.getInstance().clearAll();
+    }
 
+
+    /***
+     * 停止下载
+     * @param url key
+     */
     public void stop(String url) {
         OnDownLoadListener onDownLoadListener = DownLoadPool.getInstance().getListenerHashMap().get(url);
         LogHelper.i("download cancel listener %s", onDownLoadListener);
@@ -104,7 +115,7 @@ public class DownLoadManager {
         LogHelper.i("cancel download  path %s", downLoadPath);
         if (downLoadPath != null && !downLoadPath.isEmpty()) {
             File file = new File(downLoadPath);
-            LogHelper.i("file is exits %s",file.exists());
+            LogHelper.i("file is exits %s", file.exists());
             if (file.exists()) {
                 file.delete();
             }

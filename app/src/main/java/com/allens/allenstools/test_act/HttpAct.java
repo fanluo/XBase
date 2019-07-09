@@ -65,7 +65,7 @@ public class HttpAct extends BaseActivity {
         });
 
         $(R.id.start_download).setOnClickListener(v -> {
-            startDownLoad();
+            xHttp.doDownload(url, "sdcard/allens","text1.mp4", loadListener);
         });
 
         $(R.id.pause_1).setOnClickListener(v -> {
@@ -76,51 +76,79 @@ public class HttpAct extends BaseActivity {
         });
 
 
+        $(R.id.start_download_2).setOnClickListener(v -> {
+            xHttp.doDownload(url2, "sdcard/allens","text2.mp4", loadListener);
+        });
+
+        $(R.id.pause_2).setOnClickListener(v -> {
+            xHttp.doDownLoadPause(url2);
+        });
+        $(R.id.cancel_2).setOnClickListener(v -> {
+            xHttp.doDownLoadCancel(url2);
+        });
+
+
     }
 
     String url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    String url2 = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
-    private void startDownLoad() {
-//        String url = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
+//    String url2 = "http://v.ysbang.cn//data/video/2015/rkb/2015rkb01.mp4";
 
-        xHttp.doDownload(url, "sdcard/allens", new OnDownLoadListener() {
-            @Override
-            public void onError(String key, Throwable throwable) {
-                LogHelper.d("download onError %s", throwable.getMessage());
-                test("download 失败" + throwable.getMessage());
-            }
+//    String url2 = "http://pic1.win4000.com/pic/c/6b/44765b0881.jpg";
 
-            @Override
-            public void onSuccess(String key, String path) {
-                LogHelper.d("download success " + path);
-                test("download success " + path);
-            }
+    OnDownLoadListener loadListener = new OnDownLoadListener() {
+        @Override
+        public void onError(String key, Throwable throwable) {
+            LogHelper.d("download onError %s", throwable.getMessage());
+            if (key.equals(url))
+                test(key + "  download 失败" + throwable.getMessage());
+            else
+                text1(key + "  download 失败" + throwable.getMessage());
+        }
 
-            @Override
-            public void update(String key, long read, long count, boolean done) {
-                super.update(key, read, count, done);
-                LogHelper.d("download update read %s , count %s, done %s", read, count, done);
-            }
+        @Override
+        public void onSuccess(String key, String path) {
+            LogHelper.d("download success " + path);
+            if (key.equals(url))
+                test(key + " download success " + path);
+            else
+                text1(key + " download success " + path);
+        }
 
-            @Override
-            public void onPause(String key) {
-                super.onPause(key);
-                test("download onPause " + key);
-            }
+        @Override
+        public void update(String key, long read, long count, boolean done) {
+            super.update(key, read, count, done);
+//            LogHelper.d(key + " download update read %s , count %s, done %s", read, count, done);
+        }
 
-            @Override
-            public void onCancel(String key) {
-                super.onCancel(key);
-                test("download onCancel " + key);
-            }
+        @Override
+        public void onPause(String key) {
+            super.onPause(key);
+            if (key.equals(url))
+                test(key + " download onPause " + key);
+            else
+                text1(key + " download onPause " + key);
+        }
 
-            @Override
-            public void onProgress(String key, int progress) {
-                LogHelper.d("progress %s", progress);
+        @Override
+        public void onCancel(String key) {
+            super.onCancel(key);
+            if (key.equals(url))
+                test(key + " download onCancel " + key);
+            else
+                text1(key + " download onCancel " + key);
+        }
+
+        @Override
+        public void onProgress(String key, int progress) {
+            LogHelper.d(key + " progress %s", progress);
+            if (key.equals(url))
                 test("进度-----》" + progress);
-            }
-        });
-    }
+            else
+                text1("进度-----》" + progress);
+        }
+    };
 
     private void do_body() {
         LogHelper.i("[网络请求 start]");
@@ -153,6 +181,10 @@ public class HttpAct extends BaseActivity {
 
     private void test(String info) {
         ((TextView) $(R.id.text)).setText(info);
+    }
+
+    private void text1(String info) {
+        ((TextView) $(R.id.text1)).setText(info);
     }
 
     @Override

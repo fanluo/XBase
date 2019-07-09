@@ -189,7 +189,10 @@ public class XHttp {
 
     public void doDownLoadCancel(String url) {
         DownLoadManager.getInstance().stop(url);
+    }
 
+    public void doDownLoadCancelAll() {
+        DownLoadManager.getInstance().stopAll();
     }
 
 }
