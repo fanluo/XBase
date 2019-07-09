@@ -13,10 +13,15 @@ import com.allens.lib_base.retrofit.impl.OnHttpListener;
 import com.allens.lib_base.retrofit.interceptor.HeardInterceptor;
 import com.allens.lib_base.retrofit.provider.ObservableProvider;
 import com.allens.lib_base.retrofit.subscriber.BeanObserver;
+import com.allens.lib_base.retrofit.subscriber.UploadObserver;
+import com.allens.lib_base.retrofit.upload.OnUploadListener;
+import com.allens.lib_base.retrofit.upload.bean.UploadBean;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +30,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -210,6 +218,31 @@ public class XHttp {
 
     public void doDownLoadCancelAll() {
         DownLoadManager.getInstance().stopAll();
+    }
+
+
+    public <T> void doUpload(String url, Class<T> tClass, final OnUploadListener<T> listener) {
+        HashMap<String, String> map = new HashMap<>();
+        listener.onMapPart(map);
+
+        HashMap<String, UploadBean> fileMap = new HashMap<>();
+        listener.onMapFile(fileMap);
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            builder.addFormDataPart(entry.getKey(), entry.getValue());
+        }
+
+        for (Map.Entry<String, UploadBean> entry : fileMap.entrySet()) {
+            String key = entry.getKey();
+            UploadBean uploadBean = entry.getValue();
+            File file = uploadBean.getFile();
+            builder.addFormDataPart(key,
+                    file.getName(),
+                    RequestBody.create(MediaType.parse(uploadBean.getType()), file));
+        }
+        ObservableProvider.getObservableUpload(url, builder.build())
+                .subscribe(new UploadObserver<T>(tClass, listener));
     }
 
 }

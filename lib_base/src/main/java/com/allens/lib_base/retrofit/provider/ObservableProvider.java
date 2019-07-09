@@ -9,6 +9,7 @@ import com.allens.lib_base.retrofit.tool.UrlTool;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Observer;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -70,6 +71,12 @@ public class ObservableProvider {
         listener.onMap(map);
         return HttpManager.create().getService(ApiService.class)
                 .doDelete(parameter, map)
+                .compose(RxComposeManager.applyMain());
+    }
+
+    public static Observable<ResponseBody> getObservableUpload(String url, RequestBody requestBody) {
+        return HttpManager.create().getService(ApiService.class)
+                .upload(url, requestBody)
                 .compose(RxComposeManager.applyMain());
     }
 

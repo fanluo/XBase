@@ -19,6 +19,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -53,4 +54,7 @@ public interface ApiService {
     @GET
     Observable<ResponseBody> downloadFile(@Header("RANGE") String start, @Url String url);
 
+    @Multipart
+    @POST
+    Observable<ResponseBody> upload(@Url String url, RequestBody requestBody);
 }
